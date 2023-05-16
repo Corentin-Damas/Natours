@@ -1,0 +1,22 @@
+{
+  "name": "natours",
+  "version": "1.0.0",
+  "description": "Landing page for natours",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nazemrap/Natours.git"
+  },
+  "author": "Corentin Damas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nazemrap/Natours/issues"
+  },
+  "homepage": "https://github.com/Nazemrap/Natours#readme",
+  "devDependencies": {
+    "node-sass": "^8.0.0"
+  }
+}

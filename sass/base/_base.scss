@@ -12,7 +12,8 @@ html {
 
    * Don't forget that if 2 or more are conflicting 
      the last one to be describe will apply
-     ( expesialy regardin tab-land and tab-port )
+     ( especially regardin tab-land and tab-port )
+
   */
 
   font-size: 62.5%; // 1rem = 10px 10px/16px = 62.5%
@@ -32,4 +33,10 @@ html {
 
 body {
   box-sizing: border-box;
+  padding: 3rem;
+
+  @include respond(tab-port) {
+    padding: 0;
+  }
+
 }

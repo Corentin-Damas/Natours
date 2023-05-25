@@ -14,3 +14,4 @@ It's a destock-first design strategy (the mobile version is in construction for 
 
  ![image](https://github.com/Corentin-Damas/Natours/assets/100703359/e9932127-c825-490d-9fc0-dd9e65f07e1b)
 
+Built by CORENTIN DAMAS for HTML, CSS, SCSS practice. Credit for original design : JONAS SCHMEDTMANN.

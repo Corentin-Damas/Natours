@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const moogoose = require("mongoose");
+const Tour = require("./tourModel");
 
 const reviewSchema = new moogoose.Schema(
   {
@@ -34,12 +35,54 @@ const reviewSchema = new moogoose.Schema(
   }
 );
 
+// preventing duplicated comment One user should have One comment/ tour
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
 reviewSchema.pre(/^find/, function (next) {
   this.populate({
     path: "user",
     select: "name photo",
   });
   next();
+});
+
+reviewSchema.statics.calcAverageRatings = async function (tourId) {
+  const stats = await this.aggregate([
+    {
+      $match: { tour: tourId },
+    },
+    {
+      $group: {
+        _id: "$tour",
+        nRating: { $sum: 1 },
+        avgRating: { $avg: "$rating" },
+      },
+    },
+  ]);
+  if (stats.length > 0) {
+    await Tour.findByIdAndUpdate(tourId, {
+      ratingsQuantity: stats[0].nRating,
+      ratingsAverage: stats[0].avgRating,
+    });
+  } else {
+    await Tour.findByIdAndUpdate(tourId, {
+      ratingsQuantity: 0,
+      ratingsAverage: 4.5,
+    });
+  }
+};
+reviewSchema.post("save", function () {
+  this.constructor.calcAverageRatings(this.tour);
+});
+
+// Avoid constant query to the db, register the interesting stats and update
+reviewSchema.pre(/^findOneAnd/, async function (next) {
+  this.r = await this.findOne();
+  next();
+});
+reviewSchema.post(/^findOneAnd/, async function () {
+  //await this.findOne(); Does not work here, query has already exec
+  await this.r.constructor.calcAverageRatings(this.r.tour);
 });
 
 const Review = moogoose.model("Review", reviewSchema);

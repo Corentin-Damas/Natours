@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
+const helmetSecu = require("./utils/helmetSecurityPass");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
@@ -22,7 +23,9 @@ app.set("views", path.join(__dirname, "views"));
 //MIDDLEWARES
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(helmet());
+// app.use(helmet());
+
+app.use(helmet.contentSecurityPolicy(helmetSecu));
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -60,7 +63,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', viewRouter)
+app.use("/", viewRouter);
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/reviews", reviewRouter);

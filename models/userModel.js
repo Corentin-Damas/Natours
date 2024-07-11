@@ -67,11 +67,11 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.methods.correctPassword = async function (
+userSchema.methods.correctPassword = async function(
   candidatePassword,
-  usePassword
+  userPassword
 ) {
-  return await bcrypt.compare(candidatePassword, usePassword);
+  return await bcrypt.compare(candidatePassword, userPassword);
 };
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
@@ -98,7 +98,6 @@ userSchema.methods.createPasswordResetToken = function () {
   this.passwordResetExpire = Date.now() + 10 * 60 * 1000;
   return resetToken;
 };
-
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

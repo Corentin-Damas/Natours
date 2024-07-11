@@ -22,6 +22,9 @@ const reviews = JSON.parse(
 const importData = async () => {
   try {
     await Tour.create(tours);
+    console.log(
+      "MAKE SURE TO REMOVE ALL MIDDLEWEAR FROM USERMODEL OR PASSWORD WILL BE INCRIPTED TWICE"
+    );
     await User.create(users, { validateBeforeSave: false });
     await Review.create(reviews);
     console.log("Data successfully loaded");

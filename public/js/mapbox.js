@@ -26,7 +26,6 @@ L.control.zoom({
 }).addTo(map);
 
 function switchCoordinates(arr) {
-  console.log(arr);
   return [arr[1], arr[0]];
 }
 

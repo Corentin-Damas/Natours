@@ -6,8 +6,10 @@ const helmet = require("helmet");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
-const helmetSecu = require("./utils/helmetSecurityPass");
+const cookieParser = require('cookie-parser')
+// const cors = require('cors');
 
+const helmetSecu = require("./utils/helmetSecurityPass");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 const tourRouter = require("./routes/tourRoutes");
@@ -23,9 +25,13 @@ app.set("views", path.join(__dirname, "views"));
 //MIDDLEWARES
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.use(helmet());
-
+app.use(helmet());
 app.use(helmet.contentSecurityPolicy(helmetSecu));
+// app.use(cors());
+// app.use((req, res, next) => {
+//   res.setHeader('Content-Security-Policy', "script-src 'self' cdnjs.cloudflare.com;");
+//   next();
+// });
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -57,9 +63,11 @@ app.use(
 
 // Body parser && static files
 app.use(express.json({ limit: "10kb" }));
+app.use(cookieParser())
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
+  console.log(req.cookies)
   next();
 });
 

@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 // const cors = require('cors');
 
 const helmetSecu = require("./utils/helmetSecurityPass");
@@ -28,7 +28,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy(helmetSecu));
 // app.use(cors());
-
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -60,11 +59,12 @@ app.use(
 
 // Body parser && static files
 app.use(express.json({ limit: "10kb" }));
-app.use(cookieParser())
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
+app.use(cookieParser());
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.cookies)
+  console.log(req.cookies);
   next();
 });
 

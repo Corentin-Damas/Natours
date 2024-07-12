@@ -28,10 +28,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy(helmetSecu));
 // app.use(cors());
-// app.use((req, res, next) => {
-//   res.setHeader('Content-Security-Policy', "script-src 'self' cdnjs.cloudflare.com;");
-//   next();
-// });
+
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));

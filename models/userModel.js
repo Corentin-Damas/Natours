@@ -14,7 +14,10 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [validator.isEmail, "Please provide a valid email"],
   },
-  photo: String,
+  photo: {
+    type: String,
+    default: "default.jpg",
+  },
   role: {
     type: String,
     require: [true, "Please aassign a role"],
@@ -66,7 +69,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.methods.correctPassword = async function(
+userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword
 ) {

@@ -8,12 +8,10 @@ module.exports = {
     scriptSrc: ["'self'", "https://unpkg.com", "https://cdnjs.cloudflare.com"],
     styleSrc: [
       "'self'",
-      "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
       "https://unpkg.com",
       "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=",
       "'unsafe-inline'", // This might be necessary if Leaflet injects inline styles
       "https://cdnjs.cloudflare.com",
-      "https://fonts.googleapis.com",
     ],
     imgSrc: [
       "'self'",
@@ -37,11 +35,7 @@ module.exports = {
       "https://tile.openstreetmap.fr",
       "http://127.0.0.1:3000",
     ],
-    fontSrc: [
-      "'self'",
-      "https://cdnjs.cloudflare.com",
-      "https://fonts.gstatic.com",
-    ],
+    fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
     frameSrc: ["'self'", "https://www.openstreetmap.org"],
     objectSrc: ["'none'"],
     upgradeInsecureRequests: [],

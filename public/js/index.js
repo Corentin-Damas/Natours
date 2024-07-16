@@ -12,9 +12,10 @@ const login = async (email, password) => {
     });
     if (res.status == 200) {
       showAlert("success", "Logged in successfull!");
-      window.setTimeout(() => {
-        location.assign("/overview");
-      }, 1500);
+      console.log()
+      // window.setTimeout(() => {
+      //   location.assign("/overview");
+      // }, 50000);
     } else {
       showAlert("error", "incorrect Id or password");
     }
@@ -82,8 +83,7 @@ if (userDataForm) {
     form.append("name", document.getElementById("name").value);
     form.append("email", document.getElementById("email").value);
     form.append("photo", document.getElementById("photo").files[0]);
-    console.log(form);
-    
+
     updateSetting({ form, email }, "data");
   });
 }
@@ -118,3 +118,19 @@ const showAlert = (type, msg) => {
   document.querySelector("body").insertAdjacentHTML("afterbegin", markup);
   window.setTimeout(hideAlert, 5000);
 };
+
+const stripe = Stripe(process.env.STRIPE_PUBLIC_KEY);
+const bookTour = async (tourId) => {
+  const session = await fetch(
+    `http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`
+  );
+  console.log(session);
+};
+const bookBtn = docment.getElementById("book-tour");
+if (bookBtn) {
+  e.target.textContent = "Processing...";
+  bookBtn.addEventListener("click", (e) => {
+    const { tourId } = e.target.dataset;
+    bookTour(tourId);
+  });
+}

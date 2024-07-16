@@ -5,11 +5,12 @@ html
             meta(charset="UTF-8")
             meta(name="viewport" content="width=device-width, initial-scale=1.0") 
             link(href='https://fonts.googleapis.com/css?family=Lato:300,300i,700' rel='stylesheet')
-            link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
-            //- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' http://127.0.0.1:3000;">
+            link(rel='shortcut icon' type='image/png' href='./../img/favicon.png')
+            <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self' http://127.0.0.1:3000;">
 
             link(rel='stylesheet' href='/css/overview.css')
             link(rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="")
+
             title Natours | #{title}
 
     
@@ -22,6 +23,6 @@ html
 
         // FOOTER
         include _footer
-    block scripts
 
-    script(src='/js/index.js')
+    script(src='/js/login.js')
+ 

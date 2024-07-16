@@ -5,7 +5,7 @@ module.exports = {
       "https://unpkg.com",
       "https://www.openstreetmap.org",
     ],
-    scriptSrc: ["'self'", "https://unpkg.com", "https://cdnjs.cloudflare.com"],
+    scriptSrc: ["'self'", "https://unpkg.com", "https://cdnjs.cloudflare.com",'https://js.stripe.com'],
     styleSrc: [
       "'self'",
       "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
@@ -42,7 +42,7 @@ module.exports = {
       "https://cdnjs.cloudflare.com",
       "https://fonts.gstatic.com",
     ],
-    frameSrc: ["'self'", "https://www.openstreetmap.org"],
+    frameSrc: ["'self'", "https://www.openstreetmap.org", 'https://js.stripe.com'],
     objectSrc: ["'none'"],
     upgradeInsecureRequests: [],
   },

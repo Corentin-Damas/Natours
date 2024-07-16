@@ -7,7 +7,7 @@ const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
-// const cors = require('cors');
+const cors = require("cors");
 
 const helmetSecu = require("./utils/helmetSecurityPass");
 const AppError = require("./utils/appError");
@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy(helmetSecu));
-// app.use(cors());
+app.use(cors());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));

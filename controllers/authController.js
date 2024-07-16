@@ -1,4 +1,3 @@
-const crypto = require("crypto");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("./../models/userModel");
@@ -70,7 +69,7 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.logout = (req, res) => {
-  res.cookie("jwt", "loggedout", {
+  res.cookie("jwt", "loggout", {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
@@ -124,38 +123,32 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 // Only for rendered pages, no errors!
 exports.isLoggedIn = async (req, res, next) => {
-  console.log(`checking if loggin in .... ${req.cookies.jwt}`);
-  if (req.cookies.jwt) {
-    try {
-      // 1) verify token
+  try{
+
+    if (req.cookies.jwt) {
+      // Verifie the token/cookie
       const decoded = await promisify(jwt.verify)(
-        req.cookies.jwt,
-        process.env.JWT_SECRET
-      );
-
-      // 2) Check if user still exists
-      const currentUser = await User.findById(decoded.id);
-      if (!currentUser) {
-        return next();
-      }
-
-      // 3) Check if user changed password after the token was issued
-      if (currentUser.changedPasswordAfter(decoded.iat)) {
-        return next();
-      }
-
-      // THERE IS A LOGGED IN USER
-      res.locals.user = currentUser;
-      console.log("logg in true");
+      req.cookies.jwt,
+      process.env.JWT_SECRET
+    );
+    // User still exist ?
+    const freshUser = await User.findById(decoded.id);
+    if (!freshUser) {
       return next();
     } catch (err) {
       console.log("logg in False", err);
       return next();
     }
+    // User is logged in
+    
+    res.locals.user = freshUser;
+    return next();
   }
-  console.log("logg in False");
+}catch(err){
+  return next()
+}
   next();
-};
+});
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {

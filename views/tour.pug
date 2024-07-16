@@ -3,7 +3,6 @@ include _reviewCard
 
 block append scripts
     script(src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="")
-    script(src="https://js.stripe.com/v3/")
     script(src='/js/mapbox.js')
 
 mixin overviewBox(label, text, icon )
@@ -26,11 +25,11 @@ block content
             .heading-box__group
                 .heading-box__detail
                     svg.heading-box__icon
-                        use(xlink:href='/img/icons.svg#icon-clock')
+                        use(xlink:href='./img/icons.svg#icon-clock')
                     span.heading-box__text= `${tour.duration} days` 
                 .heading-box__detail
                     svg.heading-box__icon
-                        use(xlink:href='/img/icons.svg#icon-map-pin')
+                        use(xlink:href='./img/icons.svg#icon-map-pin')
                     span.heading-box__text= tour.startLocation.description
 
     section.section-description

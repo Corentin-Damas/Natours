@@ -15,7 +15,7 @@ const login = async (email, password) => {
       window.setTimeout(() => {
         location.assign("/overview");
       }, 1500);
-    } else {
+    } else{
       showAlert("error", "incorrect Id or password");
     }
   } catch (err) {
@@ -23,36 +23,13 @@ const login = async (email, password) => {
   }
 };
 
-const form = document.querySelector(".form");
-if (form) {
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    login(email, password);
-  });
-}
+document.querySelector(".form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  login(email, password);
+});
 
-const logout = async () => {
-  try {
-    console.log("fetching ....");
-    const res = await fetch("http://127.0.0.1:3000/api/v1/users/logout");
-    if (res.status == 200) {
-      console.log("reloading....");
-      location.reload(true);
-    } else {
-      showAlert("Error", "error logging out! Try again ");
-    }
-  } catch (err) {
-    showAlert("Error", "error logging out! Try again");
-  }
-};
-const logOutBtn = document.querySelector(".nav__el--logout");
-if (logOutBtn) {
-  logOutBtn.addEventListener("click", logout);
-}
-
-// Utils
 const hideAlert = () => {
   const el = document.querySelector(".alert");
   if (el) el.parentElement.removeChild(el);

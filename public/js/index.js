@@ -1,32 +1,23 @@
-const login = async (email, password) => {
-  try {
-    const res = await fetch("http://127.0.0.1:3000/api/v1/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-    if (res.status == 200) {
-      showAlert("success", "Logged in successfull!");
-      console.log()
-      // window.setTimeout(() => {
-      //   location.assign("/overview");
-      // }, 50000);
-    } else {
-      showAlert("error", "incorrect Id or password");
-    }
-  } catch (err) {
-    showAlert("error", err.message);
-  }
-};
+// import "@babel/polyfill";
+import { login, logout } from "./login";
+import { displayMap } from "./mapBox";
+import { updateSettings } from "./updateSettings";
+import { bookTour } from "./stripe";
 
-const form = document.querySelector(".form--login");
-if (form) {
-  form.addEventListener("submit", (e) => {
+const mapBox = document.getElementById("map");
+const loginForm = document.querySelector(".form--login");
+const logOutBtn = document.querySelector(".nav__el--logout");
+const userDataForm = document.querySelector(".form-user-data");
+const userPasswordForm = document.querySelector(".form-user-password");
+const bookBtn = document.getElementById("book-tour");
+
+if (mapBox) {
+  const locations = JSON.parse(mapBox.dataset.locations);
+  displayMap(locations);
+}
+
+if (loginForm) {
+  loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -34,49 +25,9 @@ if (form) {
   });
 }
 
-const logout = async () => {
-  try {
-    console.log("fetching ....");
-    const res = await fetch("http://127.0.0.1:3000/api/v1/users/logout");
-    if (res.status == 200) {
-      location.reload(true);
-    } else {
-      showAlert("Error", "error logging out! Try again ");
-    }
-  } catch (err) {
-    showAlert("Error", "error logging out! Try again");
-  }
-};
-const logOutBtn = document.querySelector(".nav__el--logout");
-if (logOutBtn) {
-  logOutBtn.addEventListener("click", logout);
-}
+if (logOutBtn) logOutBtn.addEventListener("click", logout);
 
-const updateSetting = async (data, type) => {
-  try {
-    const urlDestination =
-      type === "password"
-        ? "http://127.0.0.1:3000/api/v1/users/updateMyPassword"
-        : "http://127.0.0.1:3000/api/v1/users/updateMe";
-
-    const res = await fetch(urlDestination, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    if (res.status == 200) {
-      showAlert("success", `${type.toUpperCase()} updated successfully!`);
-    } else {
-      showAlert("error", `Couldn't update ${type.toUpperCase()}`);
-    }
-  } catch (err) {
-    showAlert("error", err.message);
-  }
-};
-const userDataForm = document.querySelector(".form-user-data");
-if (userDataForm) {
+if (userDataForm)
   userDataForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const form = new FormData();
@@ -84,18 +35,18 @@ if (userDataForm) {
     form.append("email", document.getElementById("email").value);
     form.append("photo", document.getElementById("photo").files[0]);
 
-    updateSetting({ form, email }, "data");
+    updateSettings(form, "data");
   });
-}
-const userPasswordForm = document.querySelector(".form-user-password");
-if (userPasswordForm) {
-  userDataForm.addEventListener("submit", async (e) => {
+
+if (userPasswordForm)
+  userPasswordForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    document.querySelector(".btn--save-password").textContent = "Updating...";
+    document.querySelector(".btn--save-password").textContent = "Updating";
+
     const passwordCurrent = document.getElementById("password-current").value;
     const password = document.getElementById("password").value;
     const passwordConfirm = document.getElementById("password-confirm").value;
-    await updateSetting(
+    await updateSettings(
       { passwordCurrent, password, passwordConfirm },
       "password"
     );
@@ -104,33 +55,11 @@ if (userPasswordForm) {
     document.getElementById("password").value = "";
     document.getElementById("password-confirm").value = "";
   });
-}
 
-// Utils
-const hideAlert = () => {
-  const el = document.querySelector(".alert");
-  if (el) el.parentElement.removeChild(el);
-};
-
-const showAlert = (type, msg) => {
-  hideAlert();
-  const markup = `<div class="alert alert--${type}">${msg}</div>`;
-  document.querySelector("body").insertAdjacentHTML("afterbegin", markup);
-  window.setTimeout(hideAlert, 5000);
-};
-
-const stripe = Stripe(process.env.STRIPE_PUBLIC_KEY);
-const bookTour = async (tourId) => {
-  const session = await fetch(
-    `http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`
-  );
-  console.log(session);
-};
-const bookBtn = docment.getElementById("book-tour");
 if (bookBtn) {
-  e.target.textContent = "Processing...";
   bookBtn.addEventListener("click", (e) => {
-    const { tourId } = e.target.dataset;
-    bookTour(tourId);
+    e.target.textContent = 'Processing...'
+    const {tourId} = e.target.dataset;
+    bookTour(tourId)
   });
 }

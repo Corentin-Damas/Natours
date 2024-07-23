@@ -64,8 +64,62 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   const bookings = await Booking.find({ user: req.user.id });
   const tourIDs = bookings.map((el) => el.tour.id);
   const tours = await Tour.find({ _id: { $in: tourIDs } });
-  res.status(200).render('overview', {
+  res.status(200).render("overview", {
     title: "My Tours",
-    tours
-  })
+    tours,
+  });
 });
+
+exports.getLanding = catchAsync(async (req, res, next) => {
+  let tours = defaultTours;
+  tours = await Tour.find().sort({ price: 1 }).limit(3);
+
+  res.status(200).render("landing", {
+    title: "Natours | Exciting tours for adventurous people",
+    tours,
+  });
+});
+exports.getAbout = (req, res, next) => {
+  res.status(200).render("about", {
+    title: "About",
+  });
+};
+
+const defaultTours = [
+  {
+    _id: "5c88fa8cf4afda39709c2951",
+    name: "The Forest Hiker",
+    duration: 5,
+    maxGroupSize: 25,
+    difficulty: "easy",
+    price: 397,
+    imageCover: "tour-1-cover.jpg",
+    numberGuides: 3,
+    numberStops: 3,
+    id: "5c88fa8cf4afda39709c2951",
+  },
+  {
+    _id: "5c88fa8cf4afda39709c2955",
+    name: "The Sea Explorer",
+    duration: 7,
+    maxGroupSize: 15,
+    difficulty: "medium",
+    price: 497,
+    imageCover: "tour-2-cover.jpg",
+    numberGuides: 2,
+    numberStops: 4,
+    id: "5c88fa8cf4afda39709c2955",
+  },
+  {
+    _id: "5c88fa8cf4afda39709c295a",
+    name: "The Snow Adventurer",
+    duration: 4,
+    maxGroupSize: 10,
+    difficulty: "difficult",
+    price: 997,
+    imageCover: "tour-3-cover.jpg",
+    numberGuides: 3,
+    numberStops: 2,
+    id: "5c88fa8cf4afda39709c295a",
+  },
+];

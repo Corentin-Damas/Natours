@@ -1,0 +1,265 @@
+include _presentationCard
+
+doctype html
+html
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0") 
+        link(href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet")
+        link(rel="stylesheet" href="css/style.css")
+
+        link(rel="stylesheet" href="css/icon-font.css")
+        link(rel="shortcut icon" type="image/png" href="img/favicon.png")
+        script(src="https://js.stripe.com/v3/")
+
+        title #{title} 
+    
+    body 
+        div(class="navigation")
+            input(type="checkbox" class="navigation__checkbox" id="navi-toggle")
+            label( for="navi-toggle" class="navigation__button")
+                span(class="navigation__icon") &nbsp;
+            
+            div(class="navigation__background") &nbsp;
+            nav(class="navigation__nav")
+                ul(class="navigation__list")
+                    li(class="navigation__item")
+                        a(href="/about" class="navigation__link") 
+                            span 01 
+                            | About Natours
+                    li(class="navigation__item")
+                        a(href="#" class="navigation__link")
+                            span 02
+                            | Your Benefits
+                    li(class="navigation__item")
+                        a(href="#" class="navigation__link")
+                            span 03
+                            | Popular tours
+                    li(class="navigation__item")
+                        a(href="#" class="navigation__link")
+                            span 04
+                            | Stories
+                    li(class="navigation__item")
+                        a(href="./overview" class="navigation__link")
+                            span 05
+                            | Book now
+
+    header(class="header")
+        div(class="header__logo-box")
+            img(src="img/logo-white.png" alt="logo" class="header__logo")
+      
+        div(class="header__text-box")
+
+            h1(class="heading-primary")
+                span(class="heading-primary--main") Outdoors
+                span(class="heading-primary--sub") is where life happens
+            
+            a(href="/overview" class="btn btn--white btn--animated") Discover our tours
+
+    main 
+        section(class="section-about")
+            div(class="u-center-text u-margin-bottom-big")
+                h2(class="heading-secondary") Exiting tours for adventurous people
+            
+            div(class="row")
+                div(class="col-1-of-2")
+                    h3(class="heading-tertiary u-margin-bottom-small") You're going to fall in love with nature
+                    p(paragraph) Embark on an unforgettable journey with Natour, where pristine landscapes and breathtaking vistas await. Our expertly guided tours immerse you in the heart of nature's beauty, offering a chance to explore the wild like never before.
+
+                    h3(class="heading-tertiary u-margin-bottom-small") Live adventure like you never have before
+                    p(paragraph) Join us on thrilling adventures designed for all levels of explorers. Whether you seek the serenity of a forest hike or the adrenaline rush of mountain climbing, Natour has the perfect itinerary for you.
+
+                    a(href="/about" class="btn-text") Learn more &rarr;
+
+                div(class="col-1-of-2")
+                    div(class="composition")
+                        img(srcset="img/nat-1.jpg 300w, img/nat-1-large.jpg 1000w"
+                            sizes="(max-width: 900px) 300px, 1000px"
+                            alt="Photo 1"
+                            src="img/nat-1-large.jpg"
+                            class="composition__photo composition__photo--p1")
+                        img(srcset="img/nat-2.jpg 300w, img/nat-2-large.jpg 1000w"
+                            sizes="(max-width: 900px) 300px, 1000px"
+                            alt="Photo 2"
+                            src="img/nat-2-large.jpg"
+                            class="composition__photo composition__photo--p2")
+                        img(srcset="img/nat-3.jpg 300w, img/nat-3-large.jpg 1000w"
+                            sizes="(max-width: 900px) 300px, 1000px"
+                            alt="Photo 3"
+                            src="img/nat-3-large.jpg"
+                            class="composition__photo composition__photo--p3")
+
+        section(class="section-features")
+            div(class="row")
+                +presentationCard( "world" ,"Explore the world","Discover breathtaking landscapes and hidden gems on our guided nature tours." )
+                +presentationCard( "compass" ,"Meet Nature","Travel responsibly with Natours. Our eco-friendly tours let you enjoy nature while preserving it for the future." )
+                +presentationCard( "map" ,"Find your way","Whether you're a thrill-seeker or a peace-lover, Natours has the perfect tour." )
+                +presentationCard( "heart" ,"Live a healthier life","Escape the city and immerse yourself in serene, untouched beauty. Join us for a rejuvenating experience." )
+   
+   
+        section(class="section-tours" id="section-tours")
+            div(class="u-center-text u-margin-bottom-big")
+                h2(class="heading-secondary") Most popular tours
+
+            div(class="row")
+                each tour, index in tours
+                    div(class="col-1-of-3")
+                        div(class="card")
+                            div(class="card__side card__side--front")
+                                div(class=`card__picture card__picture--${index + 1}`) &nbsp;
+                                h4(class="card__heading")
+                                    span(class=`card__heading-span card__heading-span--${index + 1}`)= tour.name
+                                div(class="card__details")
+                                    ul
+                                        li #{tour.duration} day tour
+                                        li Up to #{tour.maxGroupSize} people
+                                        li #{tour.numberGuides} tour guides
+                                        li #{tour.numberStops} places visited
+                                        li Difficulty: #{tour.difficulty}
+                            div(class=`card__side card__side--back card__side--back-${index + 1}`)
+                                div(class="card__cta")
+                                    div(class="card__price-box")
+                                        div(class="card__price-only") Only
+                                        div(class="card__price-value")  #{tour.price}$
+                                    a(href="#popup" class="btn btn--white booking-selection" data-tourId=`${tour.slug}`) Book Now!
+
+
+            div(class="u-center-text u-margin-top-huge")
+                a(href="/overview" class="btn btn--green") Discover all tours
+
+        section(class="section-stories")
+            div(class="bg-video")
+                video(class="bg-video__content" autoplay muted loop)
+                    source(src="img/video.mp4" type="video/mp4")
+                    source(src="img/video.webm" type="video/webm")
+                    | Your browser is not supported!
+
+            div(class="u-center-text u-margin-bottom-big")
+                h2(class="heading-secondary") We make people genuinely happy
+
+            div(class="row")
+                div(class="story")
+                    figure(class="story__shape")
+                        img(src="img/nat-8.jpg"
+                            alt="person on a tour"
+                            class="story__image")
+                
+                        figcaption(class="story__caption") Mary Smith
+                    div(class="story__text")
+                        h3(class="heading-tertiary u-margin-bottom-small") I had the best week ever with my familly
+                        p My family and I had an amazing time on our Natours trip! We opted for the forest exploration tour, and it was perfect for all of us, from my young kids to my elderly parents. The tour was well-organized and catered to different fitness levels, ensuring everyone could enjoy it at their own pace.
+                    
+            div(class="row")
+                div(class="story")
+                    figure(class="story__shape")
+                        img(src="img/nat-9.jpg"
+                            alt="person on a tour"
+                            class="story__image")
+                
+                        figcaption(class="story__caption") Jack wilson
+                    div(class="story__text")
+                        h3(class="heading-tertiary u-margin-bottom-small") My life is completly different now
+                        p I recently went on a Natours adventure, and it was an experience of a lifetime! The guided hike through the stunning mountain trails was both exhilarating and peaceful. Our guide was incredibly knowledgeable about the local flora and fauna, and their passion for nature was contagious.
+                    
+
+            div(class="u-center-text u-margin-top-huge")
+                a(href="#" class="btn-text") Read all stories &rarr;
+            
+
+        section(class="section-book")
+            div(class="row")
+                div(class="book")
+                    div(class="book__form")
+                         form(action="#" class="form")
+                            div(class="u-margin-bottom-medium")
+                                h2(class="heading-secondary") Start booking now
+          
+                            div(class="form__group")
+                            input( type="text"
+                                class="form__input"
+                                placeholder="Full Name"
+                                id="name"
+                                required )
+                            label(for="name" class="form__label") Full Name
+ 
+                            div(class="form__group")
+                            input(type="email"
+                                class="form__input"
+                                placeholder="Full Name"
+                                id="email"
+                                required)
+                            label(for="email" class="form__label") Email adress
+          
+                            
+                        
+                            div(class="form__group u-margin-bottom-medium")
+                                div(class="form__radio-group")
+                                    input(type="radio"
+                                    class="form__radio-input"
+                                    id="small"
+                                    name="size")
+
+                                    label(for="small" class="form__radio-label")
+                                        span(class="form__radio-button") 
+                                        | 
+                                        | Small tour group
+
+                                div(class="form__radio-group")
+                                    input( type="radio"
+                                    class="form__radio-input"
+                                    id="large"
+                                    name="size")
+                                    
+                                    label(for="large" class="form__radio-label")
+                                        span(class="form__radio-button") 
+                                        | 
+                                        | Large tour group
+                                    
+
+                            div(class="form__group")
+                                button(class="btn btn--green") Next step &nbsp;
+                                    span(class="u-translateY-small") &rarr;
+                                    
+                                    
+
+    footer(class="footer")
+        div(class="footer__logo-box")
+            picture(class="footer__logo")
+                source(srcset="img/logo-green-small-1x.png 1x, img/logo-green-small-2x.png 2x"
+                        media="(max-width: 37.5em)")
+
+                img(srcset="img/logo-green-1x.png 1x, img/logo-green-2x.png 2x"
+                    alt="Full logo")
+            
+        div(class="row")
+            div(class="col-1-of-2")
+                div(class="footer__navigation")
+                    ul(class="footer__list")
+                        li(class="footer__item")
+                            a(href="#" class="footer__link") Compagny
+                        li(class="footer__item")
+                            a(href="#" class="footer__link") Contact us
+                        li(class="footer__item")
+                            a(href="#" class="footer__link") Carrers
+                        li(class="footer__item")
+                            a(href="#" class="footer__link") Privacy policy
+                        li(class="footer__item")
+                            a(href="#" class="footer__link") Terms
+
+            div(class="col-1-of-2")
+                <p class="footer__copyright"> Built by <a href="#" class="footer__link">Corentin Damas</a>. See more in my <a href="#" class="footer__link">portfolio</a>. Copyright &copy; by Corentin Damas. Credit for original design: <a href="#" class="footer__link">Jonas Schmedtmann</a>.</p>
+
+    div(class="popup" id="popup")
+        div(class="popup__content")
+            div(class="popup__left")
+                img(src="img/nat-8.jpg" alt="Tour photo" class="popup__img")
+                img(src="img/nat-9.jpg" alt="Tour photo" class="popup__img")
+            div(class="popup__right")
+                a(href="#section-tours" class="popup__close") &times;
+                h2(class="heading-secondary u-margin-bottom-small") Start booking now
+                h3(class="heading-tertiary u-margin-bottom-small") Important &ndash; Please read these terms before booking
+                p(class="popup__text") By booking a tour with Natour, you agree to our terms and conditions. All bookings are subject to availability and confirmation. Cancellations and modifications must be made within the specified period to avoid penalties. Natour is not responsible for any personal injury, loss, or damage during the tour. Please review our full terms and conditions before booking.
+                a(href="#" class="btn btn--green go-to-booking") Book now
+
+
+    script(type="module" src='/js/bundle.js')

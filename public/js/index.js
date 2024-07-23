@@ -4,12 +4,16 @@ import { displayMap } from "./mapBox";
 import { updateSettings } from "./updateSettings";
 import { bookTour } from "./stripe";
 
+
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form--login");
 const logOutBtn = document.querySelector(".nav__el--logout");
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
 const bookBtn = document.getElementById("book-tour");
+
+const bookingTourSelected = document.querySelector(".booking-selection");
+const bookingLink = document.querySelector(".go-to-booking");
 
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
@@ -58,8 +62,17 @@ if (userPasswordForm)
 
 if (bookBtn) {
   bookBtn.addEventListener("click", (e) => {
-    e.target.textContent = 'Processing...'
-    const {tourId} = e.target.dataset;
-    bookTour(tourId)
+    e.target.textContent = "Processing...";
+    const { tourId } = e.target.dataset;
+    bookTour(tourId);
+  });
+}
+
+if (bookingTourSelected) {
+  console.log("Chang href");
+  const preSelection = bookingTourSelected.dataset.tourid;
+  bookingTourSelected.addEventListener("click", (e) => {
+    e.preventDefault;
+    bookingLink.href = `http://127.0.0.1:3000/tour/${preSelection}`;
   });
 }

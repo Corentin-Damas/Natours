@@ -1,0 +1,9 @@
+mixin presentationCard(icon, title, text)
+    div(class="col-1-of-4")
+        div(class="feature-box")
+            i(class=`feature-box__icon icon-basic-${icon} u-margin-bottom-small`)
+                
+            h3(class="heading-tertiary u-margin-bottom-small")= title
+            p(class="feature-box__text")= text
+              
+

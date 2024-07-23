@@ -78,6 +78,9 @@
           $dark-green
         ),
         url(../img/nat-6.jpg);
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
     }
 
     &--3 {
@@ -87,6 +90,9 @@
           $color-terciary-blue-med
         ),
         url(../img/nat-7.jpg);
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
     }
   }
 

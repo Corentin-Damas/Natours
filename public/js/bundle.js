@@ -123,6 +123,8 @@ const $b6f4712e4c6c8e18$var$logOutBtn = document.querySelector(".nav__el--logout
 const $b6f4712e4c6c8e18$var$userDataForm = document.querySelector(".form-user-data");
 const $b6f4712e4c6c8e18$var$userPasswordForm = document.querySelector(".form-user-password");
 const $b6f4712e4c6c8e18$var$bookBtn = document.getElementById("book-tour");
+const $b6f4712e4c6c8e18$var$bookingTourSelected = document.querySelector(".booking-selection");
+const $b6f4712e4c6c8e18$var$bookingLink = document.querySelector(".go-to-booking");
 if ($b6f4712e4c6c8e18$var$mapBox) {
     const locations = JSON.parse($b6f4712e4c6c8e18$var$mapBox.dataset.locations);
     (0, $3c68af49dfc9768d$export$4c5dd147b21b9176)(locations);
@@ -163,6 +165,13 @@ if ($b6f4712e4c6c8e18$var$bookBtn) $b6f4712e4c6c8e18$var$bookBtn.addEventListene
     const { tourId: tourId } = e.target.dataset;
     (0, $f56938ec597dd420$export$8d5bdbf26681c0c2)(tourId);
 });
+if ($b6f4712e4c6c8e18$var$bookingTourSelected) {
+    const preSelection = $b6f4712e4c6c8e18$var$bookingTourSelected.dataset.tourid;
+    $b6f4712e4c6c8e18$var$bookingTourSelected.addEventListener("click", (e)=>{
+        e.preventDefault;
+        $b6f4712e4c6c8e18$var$bookingLink.href = `http://127.0.0.1:3000/tour/${preSelection}`;
+    });
+}
 
 
 //# sourceMappingURL=bundle.js.map

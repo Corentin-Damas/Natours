@@ -1,4 +1,4 @@
-/* navigation */
+/* h6 */
 :root {
   --section-rotate: 9vw;
 }
@@ -68,6 +68,9 @@ body {
   margin: 0 auto;
 }
 
+.ma-bt-sm {
+  margin-bottom: 1.5rem !important;
+}
 .ma-bt-md {
   margin-bottom: 3rem !important;
 }
@@ -1330,7 +1333,16 @@ body {
 }
 
 .bg-green {
-  background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
+  background-image: linear-gradient(to right bottom, #7dd56fcb, #28b488da), url(./../img/nat-9.jpg);
+  background-position: center;
+  height: 25rem;
+  width: 100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .navigation__checkbox {
@@ -1500,4 +1512,31 @@ body {
 .navigation__checkbox:checked + .navigation__button .navigation__icon::after {
   top: 0;
   transform: rotate(-135deg);
+}
+
+.about {
+  font-size: 1.7rem;
+}
+
+.subtext {
+  font-size: 2rem;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  align-items: top;
+  justify-items: center;
+  row-gap: 4.5rem;
+  column-gap: 3rem;
+}
+.img-cover {
+  object-fit: cover;
+  width: 100%;
+  max-width: 50rem;
+}
+
+.center{
+  text-align: center;
 }

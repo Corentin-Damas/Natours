@@ -69,7 +69,6 @@ if (bookBtn) {
 }
 
 if (bookingTourSelected) {
-  console.log("Chang href");
   const preSelection = bookingTourSelected.dataset.tourid;
   bookingTourSelected.addEventListener("click", (e) => {
     e.preventDefault;

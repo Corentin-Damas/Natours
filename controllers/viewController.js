@@ -84,6 +84,11 @@ exports.getAbout = (req, res, next) => {
     title: "About",
   });
 };
+exports.getGuide = (req, res, next) => {
+  res.status(200).render("guide", {
+    title: "Guide",
+  });
+};
 
 const defaultTours = [
   {

@@ -54,7 +54,9 @@ const $71aa1b7eb6279560$export$a0973bcfe11b05c9 = async ()=>{
 
 // Client side rendering
 const $3c68af49dfc9768d$export$4c5dd147b21b9176 = (locations)=>{
-    var map = L.map("map").setView(switchCoordinates(locations[0].coordinates), 6);
+    var map = L.map("map", {
+        scrollWheelZoom: false
+    }).setView(switchCoordinates(locations[0].coordinates), 6);
     var myIcon = L.icon({
         iconUrl: "../img/pin.png",
         iconSize: [

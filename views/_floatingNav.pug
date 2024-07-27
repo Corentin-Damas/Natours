@@ -19,16 +19,20 @@ div(class="navigation")
                     span 03
                     | Become a guide
             li(class="navigation__item")
-                a(href="#" class="navigation__link")
+                a(href="/stories" class="navigation__link")
                     span 04
                     | Stories
+            li(class="navigation__item")
+                a(href="/contact" class="navigation__link")
+                    span 05
+                    | Contact us
             if user       
                 li(class="navigation__item")
                     a(href="/me" class="navigation__link")
-                        span 05
+                        span 06
                         | My profil
             else 
                 li(class="navigation__item")
                     a(href="/login" class="navigation__link")
-                        span 05
+                        span 06
                         | Login

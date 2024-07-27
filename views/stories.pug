@@ -1,0 +1,11 @@
+extends base
+include _storiesCard
+
+block content
+  section.section-header-sm
+    h1.heading-primary.ma-bt-md.bg-stories People Stories
+  main.main
+    .masonry-grid
+        each review in reviews
+            +storiesCard(review)
+    include _cta

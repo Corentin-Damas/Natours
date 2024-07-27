@@ -12,9 +12,9 @@ $breakpoint argument choices:
 - destock
 - big-destock
 
-navigation
+book
 
-navigation__checkbox
+navigation
 1em = 16px
 */
 @keyframes moveInLeft {
@@ -1148,7 +1148,7 @@ p:not(:last-child) {
   height: 100vh;
   position: fixed;
   top: 0;
-  left: 0;
+  left: -30rem;
   z-index: 1500;
   opacity: 0;
   width: 0;
@@ -1206,6 +1206,7 @@ p:not(:last-child) {
 
 .navigation__checkbox:checked ~ .navigation__nav {
   opacity: 1;
+  left: 0rem;
   width: 100%;
 }
 

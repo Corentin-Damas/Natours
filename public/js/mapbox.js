@@ -1,6 +1,8 @@
 // Client side rendering
 export const displayMap = (locations) => {
-  var map = L.map("map").setView(
+  var map = L.map("map",{
+    scrollWheelZoom: false 
+  }).setView(
     switchCoordinates(locations[0].coordinates),
     6
   );

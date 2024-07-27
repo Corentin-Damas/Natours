@@ -1,0 +1,11 @@
+extends base
+
+block content
+  section.section-header-sm
+      h1.heading-primary.ma-bt-md.bg-tours= title
+  main.main
+
+     
+    div.cnt
+      h2.heading-secondary.ma-bt-sm.center= msg 
+      a.btn.btn--green.span-all-rows(href=`/${goTo}`) #{goTo}

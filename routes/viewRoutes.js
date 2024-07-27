@@ -9,6 +9,9 @@ router.get("/", authController.isLoggedIn, viewsController.getLanding);
 router.get("/about",authController.isLoggedIn,  viewsController.getAbout);
 router.get("/become-a-guide",authController.isLoggedIn, viewsController.getGuide);
 
+router.get("/stories", authController.isLoggedIn, viewsController.getStories);
+router.get("/policy", authController.isLoggedIn, viewsController.getPolicy);
+router.get("/contact", authController.isLoggedIn, viewsController.getContact);
 router.get("/overview", authController.isLoggedIn, viewsController.getOverview);
 router.get("/tour/:slug", authController.isLoggedIn, viewsController.getTour);
 router.get("/login", authController.isLoggedIn, viewsController.getLoginForm);
@@ -21,6 +24,7 @@ router.post(
 );
 router.get(
   "/my-tours",
+  authController.isLoggedIn,
   bookingController.createBookingCheckout,
   authController.protect,
   viewsController.getMyTours

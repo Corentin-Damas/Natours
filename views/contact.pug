@@ -1,0 +1,19 @@
+extends base
+
+block content
+  section.section-header-sm
+    h1.heading-primary.ma-bt-md.bg-contact Contact us
+  main.main
+    .contact-form
+      form.form.form--login
+        .form__group
+          label.form__label(for='name') Your Name
+          input#name.form__input(type='text', placeholder='Your name', required)
+        .form__group.ma-bt-md
+          label.form__label(for='email') Your Email
+          input#email.form__input(type='email', placeholder='you@example.com', required)
+        .form__group.ma-bt-md
+          label.form__label(for='message') Your message
+          textarea#message.form__input.form__textarea(placeholder='Your message', rows="4" cols="50", required)
+        .form__group
+          button.btn.btn--green Send 

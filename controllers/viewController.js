@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 const Booking = require("../models/bookingModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const Review = require("../models/reviewModel");
 
 exports.getOverview = catchAsync(async (req, res) => {
   const tours = await Tour.find();
@@ -64,10 +65,18 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   const bookings = await Booking.find({ user: req.user.id });
   const tourIDs = bookings.map((el) => el.tour.id);
   const tours = await Tour.find({ _id: { $in: tourIDs } });
-  res.status(200).render("overview", {
-    title: "My Tours",
-    tours,
-  });
+  if (tours.length == 0) {
+    return res.status(200).render("message", {
+      title: "My Tours",
+      msg: "You don't have any tours booked for the moment. ",
+      goTo: "overview",
+    });
+  } else {
+    res.status(200).render("overview", {
+      title: "My Tours",
+      tours,
+    });
+  }
 });
 
 exports.getLanding = catchAsync(async (req, res, next) => {
@@ -89,6 +98,27 @@ exports.getGuide = (req, res, next) => {
     title: "Guide",
   });
 };
+exports.getContact = (req, res, next) => {
+  res.status(200).render("contact", {
+    title: "Contact",
+  });
+};
+exports.getPolicy = (req, res, next) => {
+  res.status(200).render("policy", {
+    title: "Policy",
+  });
+};
+exports.getStories = catchAsync(async (req, res, next) => {
+  let reviews = await Review.find();
+  reviews = reviews.filter((el) => el.rating >= 4);
+  shuffleArray(reviews);
+  reviews = reviews.slice(0, 25);
+
+  res.status(200).render("stories", {
+    title: "Stories",
+    reviews,
+  });
+});
 
 const defaultTours = [
   {
@@ -128,3 +158,12 @@ const defaultTours = [
     id: "5c88fa8cf4afda39709c295a",
   },
 ];
+
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+};

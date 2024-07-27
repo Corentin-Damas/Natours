@@ -36,9 +36,13 @@ html
                             span 03
                             | Become a guide
                     li(class="navigation__item")
-                        a(href="#" class="navigation__link")
+                        a(href="/stories" class="navigation__link")
                             span 04
                             | Stories
+                    li(class="navigation__item")
+                        a(href="/contact" class="navigation__link")
+                            span 04
+                            | Contact us
                     if user       
                         li(class="navigation__item")
                             a(href="/me" class="navigation__link")
@@ -169,7 +173,7 @@ html
                     
 
             div(class="u-center-text u-margin-top-huge")
-                a(href="#" class="btn-text") Read all stories &rarr;
+                a(href="/stories" class="btn-text") Read all stories &rarr;
             
 
         section(class="section-book")
@@ -242,18 +246,24 @@ html
                 div(class="footer__navigation")
                     ul(class="footer__list")
                         li(class="footer__item")
-                            a(href="#" class="footer__link") Compagny
+                            a(href="/about" class="footer__link") About
                         li(class="footer__item")
-                            a(href="#" class="footer__link") Contact us
+                            a(href="/contact" class="footer__link") Contact
                         li(class="footer__item")
-                            a(href="#" class="footer__link") Carrers
+                            a(href="/become-a-guide" class="footer__link") Carrers
                         li(class="footer__item")
-                            a(href="#" class="footer__link") Privacy policy
+                            a(href="/stories" class="footer__link") Stories
                         li(class="footer__item")
-                            a(href="#" class="footer__link") Terms
+                            a(href="/policy" class="footer__link") Privacy policy
 
             div(class="col-1-of-2")
-                <p class="footer__copyright"> Built by <a href="#" class="footer__link">Corentin Damas</a>. See more in my <a href="#" class="footer__link">portfolio</a>. Copyright &copy; by Corentin Damas. Credit for original design: <a href="#" class="footer__link">Jonas Schmedtmann</a>.</p>
+                p(class="footer__copyright") Credit for original design: &copy;
+                    a(href="#" class="footer__link") Jonas Schmedtmann
+                    br
+                    | Built and modify by: &copy;
+                    a(href="#" class="footer__link") Corentin Damas.
+
+
 
     div(class="popup" id="popup")
         div(class="popup__content")

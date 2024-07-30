@@ -1,0 +1,11 @@
+extends base
+include _myReviewCard
+
+block content
+  section.section-header-sm
+    h1.heading-primary.ma-bt-md.bg-stories My reviews
+  main.main
+    .masonry-grid
+        each review in reviews
+            div.myReview
+                +myReview(review)

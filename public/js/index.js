@@ -1,16 +1,17 @@
 // import "@babel/polyfill";
 import { login, logout } from "./login";
 import { displayMap } from "./mapBox";
-import { updateSettings } from "./updateSettings";
+import { updateSettings, deleteSetting } from "./updateSettings";
 import { bookTour } from "./stripe";
-
 
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form--login");
 const logOutBtn = document.querySelector(".nav__el--logout");
 const userDataForm = document.querySelector(".form-user-data");
+const reviewDataForm = document.querySelector(".form-edit-review");
 const userPasswordForm = document.querySelector(".form-user-password");
 const bookBtn = document.getElementById("book-tour");
+const deleteBtn = document.querySelector(".btn-reviews-delete");
 
 const bookingTourSelected = document.querySelector(".booking-selection");
 const bookingLink = document.querySelector(".go-to-booking");
@@ -59,6 +60,31 @@ if (userPasswordForm)
     document.getElementById("password").value = "";
     document.getElementById("password-confirm").value = "";
   });
+
+if (reviewDataForm)
+  reviewDataForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const id = JSON.parse(reviewDataForm.dataset.id);
+    const review = document.getElementById("review").value;
+    const rating = document.getElementById("rating").value;
+
+    updateSettings({ id, rating, review }, "review");
+    window.setTimeout(() => {
+      location.assign("/my-reviews");
+    }, 1500);
+  });
+
+if (deleteBtn) 
+  deleteBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const id = JSON.parse(deleteBtn.dataset.id);
+
+    deleteSetting(id, "review");
+    window.setTimeout(() => {
+      location.assign("/my-reviews");
+    }, 1000);
+});
 
 if (bookBtn) {
   bookBtn.addEventListener("click", (e) => {

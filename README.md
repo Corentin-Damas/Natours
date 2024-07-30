@@ -22,6 +22,8 @@ See result: https://corentin-damas.github.io/Natours/
 
 
 ## To be done
- - My reviews page
  - Billing page
- - manager pages
+ - Manage Tours
+ - Manage Users
+ - Manage reviews
+ - Manage Bookings

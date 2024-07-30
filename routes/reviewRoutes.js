@@ -27,4 +27,10 @@ router
     reviewController.deleteReview
   );
 
+router
+  .route('/updateMyReview')
+  .patch(
+  reviewController.updateMyReview
+)
+
 module.exports = router;

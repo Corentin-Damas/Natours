@@ -1,6 +1,12 @@
 mixin storiesCard(review)
     .reviews__card
+        div.review-header.ma-bt-md
+            img.card__picture-img.review-header-img(src=`./img/tours/${review.tour.imageCover}`, alt=`${review.tour.name}`)
+            h6.reviews__user.review-header-name= review.tour.name
         .reviews__avatar
             img.reviews__avatar-img(src=`/img/users/${review.user.photo}`, alt=`${review.user.name}`)
             h6.reviews__user= review.user.name
         p.reviews__text.subtext= review.review
+        a.btn-very-small.btn--green.full-width.ma-bt-sm(href=`/tour/${review.tour.slug}`) #{review.tour.name} &rarr;
+
+

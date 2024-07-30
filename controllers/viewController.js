@@ -14,10 +14,12 @@ exports.getOverview = catchAsync(async (req, res) => {
 });
 exports.getTour = catchAsync(async (req, res, next) => {
   // 1) Get the data, for the requested tour (including reviews and guides)
-  const tour = await Tour.findOne({ slug: req.params.slug }).populate({
-    path: "reviews",
-    fields: "review rating user",
-  });
+  const tour = await Tour.findOne({ slug: req.params.slug }).populate(
+    {
+      path: "reviews",
+      fields: "review rating user",
+    }
+  );
 
   if (!tour) {
     return next(new AppError("There is no tour with that name.", 404));
@@ -43,24 +45,6 @@ exports.getAccount = (req, res) => {
   });
 };
 
-exports.updateUserData = catchAsync(async (req, res, next) => {
-  const updateUser = await User.findByIdAndUpdate(
-    req.user.id,
-    {
-      name: req.body.name,
-      email: req.body.email,
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
-  res.status(200).render("account", {
-    title: "Your account",
-    user: updateUser,
-  });
-});
-
 exports.getMyTours = catchAsync(async (req, res, next) => {
   const bookings = await Booking.find({ user: req.user.id });
   const tourIDs = bookings.map((el) => el.tour.id);
@@ -77,6 +61,53 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
       tours,
     });
   }
+});
+exports.getMyReviews = catchAsync(async (req, res, next) => {
+  const reviews = await Review.find({ user: req.user.id }).populate({
+    path: "tour",
+    fields: "name imageCover summary",
+  });
+  if (reviews.length == 0) {
+    return res.status(200).render("message", {
+      title: "My reviews",
+      msg: "You didn't comment any tours for the moment. ",
+      goTo: `${req.user.id}`,
+    });
+  } else {
+    res.status(200).render("myReviews", {
+      title: "My reviews",
+      reviews,
+    });
+  }
+});
+exports.getMyBilling = catchAsync(async (req, res, next) => {
+  const bookings = await Booking.find({ user: req.user.id }).populate({
+    path: "tour",
+    fields: "name imageCover summary",
+  });
+
+  if (bookings.length == 0) {
+    return res.status(200).render("message", {
+      title: "My Billing",
+      msg: "You don't have any billing for the moment. ",
+      goTo: `${req.user.id}`,
+    });
+  } else {
+    res.status(200).render("billing", {
+      title: "billing",
+      bookings,
+    });
+  }
+});
+exports.getReview = catchAsync(async (req, res, next) => {
+  const review = await Review.findOne({ _id: req.params.id }).populate({
+    path: "tour",
+    fields: "name imageCover summary",
+  });
+  res.status(200).render("editReview", {
+    title: "Edit my review",
+    review: review,
+  });
 });
 
 exports.getLanding = catchAsync(async (req, res, next) => {
@@ -109,7 +140,10 @@ exports.getPolicy = (req, res, next) => {
   });
 };
 exports.getStories = catchAsync(async (req, res, next) => {
-  let reviews = await Review.find();
+  let reviews = await Review.find().populate({
+    path: "tour",
+    fields: "name imageCover slug",
+  });
   reviews = reviews.filter((el) => el.rating >= 4);
   shuffleArray(reviews);
   reviews = reviews.slice(0, 25);

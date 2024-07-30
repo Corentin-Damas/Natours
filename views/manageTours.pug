@@ -14,16 +14,17 @@ block content
         .user-view
             nav.user-view__menu
                 ul.side-nav
-                    +navItem('/me', "Settings", "settings",  true)
+                    +navItem('/me', "Settings", "settings")
                     +navItem('/my-tours', "My booking", "briefcase")
-                    +navItem('/my-reviews', "My reviews", "star")
-                    +navItem('/my-billing', "Billing", "credit-card")
+                    +navItem('#', "My reviews", "star")
+                    +navItem('#', "Billing", "credit-card")
                     
                 - if (user.role ==="admin")
                     .admin-nav
                         h5.admin-nav__heading Admin
                         ul.side-nav
-                            +navItem('#', "Manage tours", "map")
+                            +navItem('#', "Manage tours", "map", true
+                            )
                             +navItem('#', "Manage users", "users")
                             +navItem('#', "Manage reviews", "star")
                             +navItem('#', "Manage bookings", "briefcase")
@@ -42,7 +43,7 @@ block content
                             input#email.form__input(type='email', value=`${user.email}`, required name="email")
                         .form__group.form__photo-upload
                             img.form__user-photo(src=`/img/users/${user.photo}`, alt='User photo')
-                            input.form__upload(type="file", accept="image/*", id="photo", name='photo')
+                            input.form__upload(type="file", accept="image/*", id= "photo", name='photo')
                             label(for="photo") Choose new photo
                         .form__group.right
                             button.btn.btn--small.btn--green Save settings

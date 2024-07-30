@@ -80,15 +80,17 @@ reviewSchema.post('save', function() {
 
 // findByIdAndUpdate
 // findByIdAndDelete
-reviewSchema.pre(/^findOneAnd/, async function(next) {
-  this.r = await this.findOne();
-  next();
-});
+// reviewSchema.pre(/^findOneAnd/, async function(next) {
+  
+//   this.r = await this.findOne();
 
-reviewSchema.post(/^findOneAnd/, async function() {
-  // await this.findOne(); does NOT work here, query has already executed
-  await this.r.constructor.calcAverageRatings(this.r.tour);
-});
+//   // next();
+// });
+
+// reviewSchema.post(/^findOneAnd/, async function() {
+//   // await this.findOne(); does NOT work here, query has already executed
+//   await this.r.constructor.calcAverageRatings(this.r.tour);
+// });
 
 const Review = mongoose.model('Review', reviewSchema);
 

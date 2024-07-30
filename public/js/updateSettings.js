@@ -5,6 +5,8 @@ export const updateSettings = async (data, type) => {
     const url =
       type == "password"
         ? "http://127.0.0.1:3000/api/v1/users/updateMyPassword"
+        : type == "review"
+        ? `http://127.0.0.1:3000/api/v1/reviews/${data.id}`
         : "http://127.0.0.1:3000/api/v1/users/updateMe";
     const res = await axios({
       method: "PATCH",
@@ -19,6 +21,29 @@ export const updateSettings = async (data, type) => {
       showAlert("success", `${type.toUpperCase()} updated successfully ! `);
     }
   } catch (err) {
+    console.log(err.response);
+    showAlert("error", err.response.data.message);
+  }
+};
+export const deleteSetting = async (id, type) => {
+  console.log(id)
+  try {
+    const url =
+      `http://127.0.0.1:3000/api/v1/reviews/${id}`
+
+    const res = await axios({
+      method: "DELETE",
+      withCredentials: true, // Include credentials (cookies)
+      headers: {
+        "Content-Type": "application/json",
+      },
+      url,
+    });
+    if (res.data.status === "success") {
+      showAlert("success", `${type.toUpperCase()} DELETION successfully ! `);
+    }
+  } catch (err) {
+    console.log(err.response);
     showAlert("error", err.response.data.message);
   }
 };

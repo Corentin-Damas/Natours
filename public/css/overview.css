@@ -1,4 +1,4 @@
-/* bg-guide */
+/* card */
 :root {
   --section-rotate: 9vw;
 }
@@ -230,6 +230,11 @@ body {
   background-color: #fff;
   color: #777;
 }
+.btn--trans {
+  background-color: transparent;
+  color: #333;
+  border: 1px solid #55c57a;
+}
 .btn--white::after {
   background-color: #fff;
 }
@@ -267,6 +272,24 @@ body {
 
 .btn-small:hover {
   background-color: #7dd56f;
+}
+.btn-very-small,
+.btn-very-small:link,
+.btn-very-small:visited {
+  font-size: 1.6rem;
+  padding: 1rem 1.2rem;
+  border-radius: 10rem;
+  text-transform: lowercase;
+  position: relative;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.btn-very-small:hover {
+  background-color: #7dd56f79;
 }
 
 .btn-text:link,
@@ -358,7 +381,6 @@ body {
   background-color: #f7f7f7;
   position: relative;
   height: 25rem;
-
 }
 
 .header__hero {
@@ -1093,6 +1115,7 @@ body {
 }
 
 .card {
+  position: relative;
   border-radius: 3px;
   overflow: hidden;
   -webkit-box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.1);
@@ -1341,6 +1364,7 @@ body {
 .bg-about,
 .bg-guide,
 .bg-stories,
+.bg-billing,
 .bg-tours,
 .bg-contact {
   background-position: center;
@@ -1372,6 +1396,10 @@ body {
 .bg-tours {
   background-image: linear-gradient(to right bottom, #7dd56fcb, #28b488da),
     url(./../img/tours/tour-6-2.jpg);
+}
+.bg-billing {
+  background-image: linear-gradient(to right bottom, #7dd56fcb, #28b488da),
+    url(./../img/tours/tour-4-1.jpg);
 }
 
 .navigation__checkbox {
@@ -1556,6 +1584,10 @@ body {
 .subtext {
   font-size: 2rem;
 }
+.detail-txt {
+  font-size: 1.2rem;
+  text-transform: lowercase;
+}
 
 .about-grid {
   display: grid;
@@ -1570,6 +1602,14 @@ body {
   object-fit: cover;
   width: 100%;
   max-width: 50rem;
+}
+
+.full-width {
+  width: 100%;
+  text-align: center;
+}
+.test {
+  width: 40rem;
 }
 
 .center {
@@ -1640,14 +1680,97 @@ body {
 .form__textarea {
   resize: none;
 }
-
-.list-terms{
+.list-terms {
   list-style-type: none;
   padding-left: 3rem;
-  
-
+}
+.small-termes {
+  padding-left: 6rem;
 }
 
-.small-termes{
-  padding-left: 6rem;
+.myReview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.review-header {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: 1fr;
+  align-items: last baseline;
+  justify-items: center;
+}
+.review-header-img,
+.review-header-name {
+  grid-row: 1/2;
+  grid-column: 1/2;
+}
+.review-header-img {
+  aspect-ratio: 16/9;
+}
+
+.review-header-name {
+  background-color: #28b487;
+  color: white;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.review-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+}
+.btn-reviews {
+  width: 15rem;
+  text-align: center;
+}
+.btn-reviews-delete {
+  color: #f1f1f1;
+  background-color: #eb4d4b;
+}
+.btn-reviews-delete:active,
+.btn-reviews-delete:focus {
+  background-color: #eb4e4bc2;
+}
+.btn-reviews-icon {
+  height: 1.4rem;
+}
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: 2rem;
+}
+
+.bg-transparent{
+  background-color: #2baf6928;
+  height: calc(100% - 4rem);
+  width: calc(100% - 4rem );
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  
+}
+
+.billing-bg {
+  width: 100%;
+  height: 50rem;
+  padding: 2rem;
+  opacity: 0.1;
+}
+
+.billing-info{
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  color: #000;
+}
+
+.billing-title{
+  font-size: 2.6rem;
 }

@@ -1,0 +1,14 @@
+mixin myReview(review)
+    .reviews__card
+        div.review-header.ma-bt-sm
+            img.card__picture-img.review-header-img(src=`./img/tours/${review.tour.imageCover}`, alt=`${review.tour.name}`)
+            h6.reviews__user.review-header-name= review.tour.name
+        a.btn-very-small.btn--trans.full-width.ma-bt-sm(href=`/tour/${review.tour.slug}`) #{review.tour.name} &rarr;
+
+        p.reviews__text.subtext= review.review
+        div.review-actions
+            a.btn.btn--green.btn-reviews.btn-reviews-edit(href=`/my-reviews/${review._id}`)
+                span Edit 
+                svg.heading-box__icon.btn-reviews-icon
+                    use(xlink:href=`/img/icons.svg#icon-edit`)
+

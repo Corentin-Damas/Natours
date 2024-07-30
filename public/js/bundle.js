@@ -88,7 +88,7 @@ const $3c68af49dfc9768d$export$4c5dd147b21b9176 = (locations)=>{
 
 const $8bc100f925d8cfe6$export$f558026a994b6051 = async (data, type)=>{
     try {
-        const url = type == "password" ? "http://127.0.0.1:3000/api/v1/users/updateMyPassword" : "http://127.0.0.1:3000/api/v1/users/updateMe";
+        const url = type == "password" ? "http://127.0.0.1:3000/api/v1/users/updateMyPassword" : type == "review" ? `http://127.0.0.1:3000/api/v1/reviews/${data.id}` : "http://127.0.0.1:3000/api/v1/users/updateMe";
         const res = await axios({
             method: "PATCH",
             withCredentials: true,
@@ -100,6 +100,25 @@ const $8bc100f925d8cfe6$export$f558026a994b6051 = async (data, type)=>{
         });
         if (res.data.status === "success") (0, $a01ad5087aa0d30d$export$de026b00723010c1)("success", `${type.toUpperCase()} updated successfully ! `);
     } catch (err) {
+        console.log(err.response);
+        (0, $a01ad5087aa0d30d$export$de026b00723010c1)("error", err.response.data.message);
+    }
+};
+const $8bc100f925d8cfe6$export$b0d8b865196f9f1a = async (id, type)=>{
+    console.log(id);
+    try {
+        const url = `http://127.0.0.1:3000/api/v1/reviews/${id}`;
+        const res = await axios({
+            method: "DELETE",
+            withCredentials: true,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            url: url
+        });
+        if (res.data.status === "success") (0, $a01ad5087aa0d30d$export$de026b00723010c1)("success", `${type.toUpperCase()} DELETION successfully ! `);
+    } catch (err) {
+        console.log(err.response);
         (0, $a01ad5087aa0d30d$export$de026b00723010c1)("error", err.response.data.message);
     }
 };
@@ -123,8 +142,10 @@ const $b6f4712e4c6c8e18$var$mapBox = document.getElementById("map");
 const $b6f4712e4c6c8e18$var$loginForm = document.querySelector(".form--login");
 const $b6f4712e4c6c8e18$var$logOutBtn = document.querySelector(".nav__el--logout");
 const $b6f4712e4c6c8e18$var$userDataForm = document.querySelector(".form-user-data");
+const $b6f4712e4c6c8e18$var$reviewDataForm = document.querySelector(".form-edit-review");
 const $b6f4712e4c6c8e18$var$userPasswordForm = document.querySelector(".form-user-password");
 const $b6f4712e4c6c8e18$var$bookBtn = document.getElementById("book-tour");
+const $b6f4712e4c6c8e18$var$deleteBtn = document.querySelector(".btn-reviews-delete");
 const $b6f4712e4c6c8e18$var$bookingTourSelected = document.querySelector(".booking-selection");
 const $b6f4712e4c6c8e18$var$bookingLink = document.querySelector(".go-to-booking");
 if ($b6f4712e4c6c8e18$var$mapBox) {
@@ -161,6 +182,28 @@ if ($b6f4712e4c6c8e18$var$userPasswordForm) $b6f4712e4c6c8e18$var$userPasswordFo
     document.getElementById("password-current").value = "";
     document.getElementById("password").value = "";
     document.getElementById("password-confirm").value = "";
+});
+if ($b6f4712e4c6c8e18$var$reviewDataForm) $b6f4712e4c6c8e18$var$reviewDataForm.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const id = JSON.parse($b6f4712e4c6c8e18$var$reviewDataForm.dataset.id);
+    const review = document.getElementById("review").value;
+    const rating = document.getElementById("rating").value;
+    (0, $8bc100f925d8cfe6$export$f558026a994b6051)({
+        id: id,
+        rating: rating,
+        review: review
+    }, "review");
+    window.setTimeout(()=>{
+        location.assign("/my-reviews");
+    }, 1500);
+});
+if ($b6f4712e4c6c8e18$var$deleteBtn) $b6f4712e4c6c8e18$var$deleteBtn.addEventListener("click", (e)=>{
+    e.preventDefault();
+    const id = JSON.parse($b6f4712e4c6c8e18$var$deleteBtn.dataset.id);
+    (0, $8bc100f925d8cfe6$export$b0d8b865196f9f1a)(id, "review");
+    window.setTimeout(()=>{
+        location.assign("/my-reviews");
+    }, 1000);
 });
 if ($b6f4712e4c6c8e18$var$bookBtn) $b6f4712e4c6c8e18$var$bookBtn.addEventListener("click", (e)=>{
     e.target.textContent = "Processing...";

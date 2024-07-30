@@ -7,16 +7,30 @@ block content
   main.main
     .masonry-grid
         each booking in bookings
-            div
+            div.billing-container
                 .card
                     div.bg-transparent 
                     img.billing-bg(src=`/img/tours/${booking.tour.imageCover}`, alt=`${booking.tour.name}`)
                     div.billing-info
-                        h1 #{booking.tour.name}
-                        p.card__text= booking.tour.summary
-                        div 
-                            h6 Price 
-                            h6= booking.price
+                        div.billing-info-main
+                            h1.ma-bt-sm #{booking.tour.name}
+                            p.card__text= booking.tour.summary
+                        div.billing-info-grid
+                            div.billing-info-sub
+                                h4.billing-info-sub-title Booked the 
+                                h4= booking.createdAt.toLocaleString('en-us', {month: 'long', year:"numeric"})
+                            div.billing-info-sub
+                                h4.billing-info-sub-title Price 
+                                h4  #{booking.price} €
+                            div.billing-info-sub
+                                h4.billing-info-sub-title Paid 
+                                if booking.paid
+                                     svg.card__icon
+                                        use(xlink:href='/img/icons.svg#icon-check-circle')
+                                else 
+                                     svg.card__icon.red
+                                        use(xlink:href='/img/icons.svg#icon-x-circle')
+
 
 
                     //- .review-header-img

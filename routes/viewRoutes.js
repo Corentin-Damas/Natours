@@ -4,6 +4,7 @@ const reviewController = require("../controllers/reviewController");
 const authController = require("../controllers/authController");
 const bookingController = require("../controllers/bookingController");
 
+
 const router = express.Router();
 
 router.get("/", authController.isLoggedIn, viewsController.getLanding);
@@ -53,4 +54,20 @@ router.get(
   authController.protect,
   viewsController.getMyTours
 );
+
+router.get(
+  "/manage-tours",
+  authController.isLoggedIn,
+  authController.protect,
+  authController.restrictTo("admin", "lead-guide"),
+  viewsController.getManageTours
+);
+router.get(
+  "/manage-tours/:slug",
+  authController.isLoggedIn,
+  authController.protect,
+  authController.restrictTo("admin", "lead-guide"),
+  viewsController.getManageOneTour
+);
+
 module.exports = router;

@@ -1,0 +1,57 @@
+extends base
+
+block content 
+    section.section-header-sm
+        h1.heading-primary.ma-bt-md.bg-tours= title
+    main.main 
+            each tour in tours
+
+                .card-management.ma-bt-sm
+                    img.card-management-miniature(src=`./img/tours/${tour.imageCover}`, alt=`${tour.name}`)
+                    .card-management-titles
+                        h3.wei700.green= tour.name
+                        h4= `${tour.difficulty} ${tour.duration}-day tour`
+
+                    .card-management-resume
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='./img/icons.svg#icon-map-pin')
+                            span= tour.startLocation.description
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='./img/icons.svg#icon-calendar')
+                            span= tour.startDates[0].toLocaleString('en-us', {month: 'long', year:"numeric"})
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='./img/icons.svg#icon-flag')
+                            span=`${tour.locations.length} stops`
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='./img/icons.svg#icon-user')
+                            span= `${tour.maxGroupSize} people`
+
+            
+                    div 
+                        p
+                            span.card__footer-value= `$${tour.price}`
+                            | 
+                            span.card__footer-text per person
+                        p.card__ratings
+                            span.card__footer-value= tour.ratingsAverage
+                            | 
+                            span.card__footer-text= `rating (${tour.ratingsQuantity})`
+
+                    a.btn.btn--green.btn-reviews.btn-reviews-edit(href=`/manage-tours/${tour.slug}`)
+                        span Edit 
+                        svg.heading-box__icon.btn-reviews-icon
+                            use(xlink:href=`/img/icons.svg#icon-edit`)
+
+                    
+
+
+
+
+
+                    //- .card__details
+
+                    //-     a.btn.btn--green.btn--small(href=`/tour/${tour.slug}`) Details

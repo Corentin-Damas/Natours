@@ -4,6 +4,7 @@ const Booking = require("../models/bookingModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const Review = require("../models/reviewModel");
+const calendareData = require('./../utils/calendar')
 
 exports.getOverview = catchAsync(async (req, res) => {
   const tours = await Tour.find();
@@ -139,6 +140,35 @@ exports.getPolicy = (req, res, next) => {
     title: "Policy",
   });
 };
+exports.getManageTours = catchAsync(async (req, res, next) => {
+  const tours = await Tour.find();
+  res.status(200).render("manageToursOverview", {
+    title: "Manage Tours",
+    tours
+  });
+});
+exports.getManageOneTour = catchAsync(async (req, res, next) => {
+  
+  const tour = await Tour.findOne({ slug: req.params.slug }).populate(
+    {
+      path: "reviews",
+      fields: "review rating user",
+    }
+  );
+  const guides = await User.find({role: { $in: ["guide", "lead-guide"] } })
+  const getGuideIds = (guides) => guides.map(guide => guide._id.toString());
+  const guideIds = getGuideIds(tour.guides);
+  if (!tour) {
+    return next(new AppError("There is no tour with that name.", 404));
+  }
+  res.status(200).render("manageToursEdit", {
+    title: "Tour editing",
+    tour,
+    calendareData,
+    guideIds,
+    guides
+  });
+});
 exports.getStories = catchAsync(async (req, res, next) => {
   let reviews = await Review.find().populate({
     path: "tour",

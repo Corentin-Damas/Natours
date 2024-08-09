@@ -72,7 +72,7 @@ exports.getMyReviews = catchAsync(async (req, res, next) => {
     return res.status(200).render("message", {
       title: "My reviews",
       msg: "You didn't comment any tours for the moment. ",
-      goTo: `${req.user.id}`,
+      goTo: `overview`,
     });
   } else {
     res.status(200).render("myReviews", {
@@ -91,7 +91,7 @@ exports.getMyBilling = catchAsync(async (req, res, next) => {
     return res.status(200).render("message", {
       title: "My Billing",
       msg: "You don't have any billing for the moment. ",
-      goTo: `${req.user.id}`,
+      goTo: `overview`,
     });
   } else {
     res.status(200).render("billing", {

@@ -1,16 +1,13 @@
 extends base
 
 mixin coordinateInput(data, idx)
-    .form__group.two-col.border-bot(id=`loc-${idx}`)
+    .form__group.two-col.border-bot(id=`loc-${idx}`, data-tour-location)
         div 
             label.form__label.form__label-tour(for=`pos-${idx}`) Longitude
             input.form__input.form__input-tour(type="number", id=`pos-${idx}` ,name=`pos-${idx}`, value=`${data.coordinates[0]}`)
         div 
             label.form__label.form__label-tour(for=`lat-${idx}`) Latitude
             input.form__input.form__input-tour(type="number",id=`lat-${idx}` ,name=`lat-${idx}`, value=`${data.coordinates[1]}`)
-        div 
-            label.form__label.form__label-tour(for=`addrs-${idx}`) Address  
-            input.form__input.form__input-tour(type="text", id=`addrs-${idx}` ,name=`addrs-${idx}`, value=`${data.address}`)
         div
             label.form__label.form__label-tour(for=`desciption-${idx}`) Description
             input.form__input.form__input-tour(type="text",  id=`desciption-${idx}`,name=`desciption-${idx}`, value=`${data.description}`)
@@ -42,8 +39,8 @@ block content
                         option(value="difficult", selected=tour.difficulty === 'difficult') Difficult
             div.form-tour-flex
                 .form__group.ma-bt-md
-                    label.form__label.form__label-tour(for='Price') Price ( in € )
-                    input#Price.form__input.form__input-tour(type="number", name="Price", min="60", max="10000", value=`${tour.price}`, required)
+                    label.form__label.form__label-tour(for='price') Price ( in € )
+                    input#price.form__input.form__input-tour(type="number", name="price", min="60", max="10000", value=`${tour.price}`, required)
                 .form__group.ma-bt-md
                     label.form__label.form__label-tour(for='groupeSize') Groupe size 
                     input#groupeSize.form__input.form__input-tour(type="number", name="groupeSize", min="3", max="25", value=`${tour.maxGroupSize}`,required)
@@ -51,9 +48,7 @@ block content
                     label.form__label.form__label-tour(for='coverImg') Tour Cover image
                     input#coverImg.form__input.form__input-tour(type="text", name="coverImg", value=`${tour.imageCover}`)
                 
-            //- .form__group
-            //-     label.form__label(for='slug') Tour slug
-            //-     input#slug.form__input(type="text", name="slug", value=`${tour.slug}`)
+
             .form__group
                 label.form__label.form__label-tour(for='summary') Small summary
                 textarea#summary.form__input.form__textarea(rows="2" cols="50", maxlength="100", required) #{tour.summary}
@@ -66,14 +61,14 @@ block content
                 each img, idx in tour.images 
                     .form__group
                         label.form__label.form__label-tour(for=`image${idx}`) Image n° #{idx + 1}
-                        input.form__input.form__input-tour(type="text", id=`image${idx}` , name="coverImg", value=`${img}`)
+                        input.form__input.form__input-tour(type="text", id=`image${idx}` , name="coverImg", value=`${img}`, data-tour-img)
             
             .form__group
                 h1.form__label.form__label-tour Select the guides
                 .form-tour-guides
                     each guide in guides   
                         div.guide-container
-                            input.guide-checkbox.checkbox(type="checkbox", id=`${guide._id}`, name=`${guide._id}`, checked= guideIds.includes(guide._id.toString())? true: undefined)
+                            input.guide-checkbox.checkbox(type="checkbox", data-tour-guide, id=`${guide._id}`, name=`${guide._id}`, checked=guideIds.includes(guide._id.toString()))
                             label.form__label-tour(for=`${guide._id }`)= guide.name
                             img.form__guide-photo(src=`/img/users/${guide.photo}`, alt='User photo')
 
@@ -84,12 +79,12 @@ block content
                         div.form__group
                             label.form__label.form__label-tour(for=`startDates-${idx}`) Starting Date:
                             div.form__crud
-                                input.form__input-dates(type="datetime-local" id=`startDates-${idx}` min=calendareData.minDateTime max=calendareData.maxDateTime value=calendareData.convertToDateTimeLocal(date), required )
+                                input.form__input-dates(data-tour-date , type="datetime-local" id=`startDates-${idx}` min=calendareData.minDateTime max=calendareData.maxDateTime value=calendareData.convertToDateTimeLocal(date), required )
                                 button(type="button" class="removeDate btn-crud" data-idx=idx) Remove
                 button(type="button", class="btn-crud", id="addDate") Add Date   
 
             h1.form__label-tour Starting position:
-            .form__group.two-col.ma-bt-lg.border-bot
+            .form__group.two-col.ma-bt-lg.border-bot(id="startingLocation", data-tour-startingLoc)
                 div 
                     label.form__label.form__label-tour(for='StartingPosLong') Longitude
                     input#StartingPosLong.form__input.form__input-tour(type="number", name="StartingPosLong", value=`${tour.startLocation.coordinates[0]}`, required)
@@ -111,18 +106,8 @@ block content
 
 
             .form__group.right.review-actions
-                button.btn.btn--green Save Edit
+                button.btn.btn--green.btn-save-edit Save Edit
                 button(data-id=`${JSON.stringify(tour.id)}`).btn.btn-reviews.btn-reviews-delete
                     span delete 
                     svg.heading-box__icon.btn-reviews-icon
                         use(xlink:href=`/img/icons.svg#icon-delete`)
-
-
-
-
-//-     guides: [
-//-       {
-//-         type: mongoose.Schema.ObjectId,
-//-         ref: "User",
-//-       },
-//-     ],

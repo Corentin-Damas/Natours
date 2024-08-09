@@ -88,7 +88,7 @@ const $3c68af49dfc9768d$export$4c5dd147b21b9176 = (locations)=>{
 
 const $8bc100f925d8cfe6$export$f558026a994b6051 = async (data, type)=>{
     try {
-        const url = type == "password" ? "http://127.0.0.1:3000/api/v1/users/updateMyPassword" : type == "review" ? `http://127.0.0.1:3000/api/v1/reviews/${data.id}` : "http://127.0.0.1:3000/api/v1/users/updateMe";
+        const url = type == "password" ? "http://127.0.0.1:3000/api/v1/users/updateMyPassword" : type == "review" ? `http://127.0.0.1:3000/api/v1/reviews/${data.id}` : type = `http://127.0.0.1:3000/api/v1/tours/${data.id}`;
         const res = await axios({
             method: "PATCH",
             withCredentials: true,
@@ -148,6 +148,7 @@ const $b6f4712e4c6c8e18$var$userPasswordForm = document.querySelector(".form-use
 const $b6f4712e4c6c8e18$var$bookBtn = document.getElementById("book-tour");
 const $b6f4712e4c6c8e18$var$deleteBtn = document.querySelector(".btn-reviews-delete");
 const $b6f4712e4c6c8e18$var$bookingTourSelected = document.querySelector(".booking-selection");
+const $b6f4712e4c6c8e18$var$saveTourEditBtn = document.querySelector(".btn-save-edit");
 const $b6f4712e4c6c8e18$var$bookingLink = document.querySelector(".go-to-booking");
 if ($b6f4712e4c6c8e18$var$mapBox) {
     const locations = JSON.parse($b6f4712e4c6c8e18$var$mapBox.dataset.locations);
@@ -220,16 +221,14 @@ if ($b6f4712e4c6c8e18$var$bookingTourSelected) {
 }
 // Manage tour data edit form
 if ($b6f4712e4c6c8e18$var$tourDataForm) document.addEventListener("DOMContentLoaded", function() {
-    // Create / Remove new dates, locations for the tour
     const addDateButton = document.getElementById("addDate");
     const addLocationButton = document.getElementById("addLocation");
     const datesSection = document.querySelector(".form-tour-dates");
     const locationsSection = document.querySelector(".form-tour-locations");
     const tourData = JSON.parse($b6f4712e4c6c8e18$var$tourDataForm.dataset.tour);
-    console.log(tourData);
     let currentIdxDates = tourData.startDates.length;
     let currentIdxLocation = tourData.locations.length;
-    // Add event listener to add new DATE input
+    //  ADD new DATE input
     addDateButton.addEventListener("click", function() {
         const newDateGroup = document.createElement("div");
         newDateGroup.className = "form__group";
@@ -243,11 +242,12 @@ if ($b6f4712e4c6c8e18$var$tourDataForm) document.addEventListener("DOMContentLoa
         datesSection.appendChild(newDateGroup);
         currentIdxDates++;
     });
-    // Add event listener to add new LOCATIONS input
+    // ADD new LOCATIONS input
     addLocationButton.addEventListener("click", function() {
         const newLocationDiv = document.createElement("div");
         newLocationDiv.className = "form__group two-col border-bot";
         newLocationDiv.id = `loc-${currentIdxLocation}`;
+        newLocationDiv.dataset.tourLocation = "";
         newLocationDiv.innerHTML = `        
         <div> 
             <label class="form__label form__label-tour" for="pos-${currentIdxLocation}"> Longitude </label>
@@ -257,10 +257,6 @@ if ($b6f4712e4c6c8e18$var$tourDataForm) document.addEventListener("DOMContentLoa
             <label class="form__label form__label-tour" for="lat-${currentIdxLocation}")> Latitude </label>
             <input  class="form__input form__input-tour" type="number" id="lat-${currentIdxLocation}" name="lat-${currentIdxLocation}" value="0")/>
         </div> 
-        <div> 
-            <label class="form__label form__label-tour" for="addrs-${currentIdxLocation}"> Address </label>
-            <input class="form__input form__input-tour" type="text" id="addrs-${currentIdxLocation}" placeholder="Place Address can be empty" name="addrs-${currentIdxLocation}")/>
-        </div>
         <div>
             <label class="form__label form__label-tour" for="desciption-${currentIdxLocation}"> Description </label>
             <input class="form__input form__input-tour" type="text" id="desciption-${currentIdxLocation}" placeholder="Place name or small description" name="desciption-${currentIdxLocation}" )/>
@@ -274,8 +270,7 @@ if ($b6f4712e4c6c8e18$var$tourDataForm) document.addEventListener("DOMContentLoa
         locationsSection.appendChild(newLocationDiv);
         currentIdxLocation++;
     });
-    // Add event listener to remove LOCATIONS input
-    // Add event listener to remove DATE input
+    //  REMOVE: DATE, LOCATION
     $b6f4712e4c6c8e18$var$tourDataForm.addEventListener("click", function(event) {
         if (event.target && event.target.classList.contains("removeDate")) {
             const idx = event.target.getAttribute("data-idx");
@@ -283,14 +278,74 @@ if ($b6f4712e4c6c8e18$var$tourDataForm) document.addEventListener("DOMContentLoa
             dateGroup.remove();
             currentIdxDates--;
         } else if (event.target && event.target.classList.contains("removeLocation")) {
-            console.log("remove loc clicked");
             const idx = event.target.getAttribute("data-idxloc");
             const dateGroup = document.getElementById(`loc-${idx}`).closest(".form__group");
             dateGroup.remove();
             currentIdxLocation--;
         }
     });
-});
+    // PATCH the tour
+    $b6f4712e4c6c8e18$var$saveTourEditBtn.addEventListener("click", (e)=>{
+        // Collect all the data
+        const id = tourData.id;
+        const name = document.getElementById("mainTitle").value;
+        const slug = name.toLowerCase().split(" ").join("-");
+        const duration = document.getElementById("duration").value;
+        const difficulty = document.getElementById("difficulty").value;
+        const price = document.getElementById("price").value;
+        const maxGroupSize = document.getElementById("groupeSize").value;
+        const imageCover = document.getElementById("coverImg").value;
+        const summary = document.getElementById("summary").value;
+        const description = document.getElementById("description").value;
+        const tourImgInputs = document.querySelectorAll("input[data-tour-img]");
+        const images = Array.from(tourImgInputs).map((input)=>input.value);
+        const tourGuidesInputs = document.querySelectorAll("input[data-tour-guide]");
+        const guides = Array.from(tourGuidesInputs).filter((checkbox)=>checkbox.checked).map((checkbox)=>checkbox.id);
+        const tourDatesInputs = document.querySelectorAll("input[data-tour-date]");
+        const startDates = Array.from(tourDatesInputs).map((input)=>input.value);
+        // startLocation missing here
+        const startingLocationGroup = document.getElementById("startingLocation");
+        const startLocation = {
+            type: "Point",
+            coordinates: [
+                startingLocationGroup.querySelector('input[name="StartingPosLong"]').value,
+                startingLocationGroup.querySelector('input[name="StartingPosLat"]').value
+            ],
+            address: startingLocationGroup.querySelector('input[name="StartingPosAddrs"]').value,
+            description: startingLocationGroup.querySelector('input[name="StartingPosdesc"]').value
+        };
+        const tourLocationGroups = document.querySelectorAll("[data-tour-location]");
+        const locations = Array.from(tourLocationGroups).map((group)=>{
+            return {
+                type: "Point",
+                coordinates: [
+                    group.querySelector('input[name^="pos-"]').value,
+                    group.querySelector('input[name^="lat-"]').value
+                ],
+                description: group.querySelector('input[name^="desciption-"]').value,
+                day: group.querySelector('input[name^="days-"]').value
+            };
+        });
+        // Send the API adress PATCH
+        (0, $8bc100f925d8cfe6$export$f558026a994b6051)({
+            id: id,
+            name: name,
+            slug: slug,
+            duration: duration,
+            difficulty: difficulty,
+            price: price,
+            maxGroupSize: maxGroupSize,
+            imageCover: imageCover,
+            summary: summary,
+            description: description,
+            images: images,
+            guides: guides,
+            startDates: startDates,
+            startLocation: startLocation,
+            locations: locations
+        }, "tour");
+    });
+}); // Dom Ready Event listner
 
 
 //# sourceMappingURL=bundle.js.map

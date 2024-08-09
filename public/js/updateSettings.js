@@ -7,7 +7,10 @@ export const updateSettings = async (data, type) => {
         ? "http://127.0.0.1:3000/api/v1/users/updateMyPassword"
         : type == "review"
         ? `http://127.0.0.1:3000/api/v1/reviews/${data.id}`
+        : type = "tour"
+        ? `http://127.0.0.1:3000/api/v1/tours/${data.id}` 
         : "http://127.0.0.1:3000/api/v1/users/updateMe";
+    
     const res = await axios({
       method: "PATCH",
       withCredentials: true, // Include credentials (cookies)

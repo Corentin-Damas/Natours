@@ -15,6 +15,7 @@ const bookBtn = document.getElementById("book-tour");
 const deleteBtn = document.querySelector(".btn-reviews-delete");
 
 const bookingTourSelected = document.querySelector(".booking-selection");
+const saveTourEditBtn = document.querySelector(".btn-save-edit");
 const bookingLink = document.querySelector(".go-to-booking");
 
 if (mapBox) {
@@ -106,17 +107,15 @@ if (bookingTourSelected) {
 // Manage tour data edit form
 if (tourDataForm) {
   document.addEventListener("DOMContentLoaded", function () {
-    // Create / Remove new dates, locations for the tour
     const addDateButton = document.getElementById("addDate");
     const addLocationButton = document.getElementById("addLocation");
     const datesSection = document.querySelector(".form-tour-dates");
     const locationsSection = document.querySelector(".form-tour-locations");
     const tourData = JSON.parse(tourDataForm.dataset.tour);
-    console.log(tourData);
     let currentIdxDates = tourData.startDates.length;
     let currentIdxLocation = tourData.locations.length;
 
-    // Add event listener to add new DATE input
+    //  ADD new DATE input
     addDateButton.addEventListener("click", function () {
       const newDateGroup = document.createElement("div");
       newDateGroup.className = "form__group";
@@ -131,11 +130,12 @@ if (tourDataForm) {
       currentIdxDates++;
     });
 
-    // Add event listener to add new LOCATIONS input
+    // ADD new LOCATIONS input
     addLocationButton.addEventListener("click", function () {
       const newLocationDiv = document.createElement("div");
       newLocationDiv.className = "form__group two-col border-bot";
       newLocationDiv.id = `loc-${currentIdxLocation}`;
+      newLocationDiv.dataset.tourLocation = '';
       newLocationDiv.innerHTML = `        
         <div> 
             <label class="form__label form__label-tour" for="pos-${currentIdxLocation}"> Longitude </label>
@@ -145,10 +145,6 @@ if (tourDataForm) {
             <label class="form__label form__label-tour" for="lat-${currentIdxLocation}")> Latitude </label>
             <input  class="form__input form__input-tour" type="number" id="lat-${currentIdxLocation}" name="lat-${currentIdxLocation}" value="0")/>
         </div> 
-        <div> 
-            <label class="form__label form__label-tour" for="addrs-${currentIdxLocation}"> Address </label>
-            <input class="form__input form__input-tour" type="text" id="addrs-${currentIdxLocation}" placeholder="Place Address can be empty" name="addrs-${currentIdxLocation}")/>
-        </div>
         <div>
             <label class="form__label form__label-tour" for="desciption-${currentIdxLocation}"> Description </label>
             <input class="form__input form__input-tour" type="text" id="desciption-${currentIdxLocation}" placeholder="Place name or small description" name="desciption-${currentIdxLocation}" )/>
@@ -162,9 +158,8 @@ if (tourDataForm) {
       locationsSection.appendChild(newLocationDiv);
       currentIdxLocation++;
     });
-    // Add event listener to remove LOCATIONS input
 
-    // Add event listener to remove DATE input
+    //  REMOVE: DATE, LOCATION
     tourDataForm.addEventListener("click", function (event) {
       if (event.target && event.target.classList.contains("removeDate")) {
         const idx = event.target.getAttribute("data-idx");
@@ -177,7 +172,6 @@ if (tourDataForm) {
         event.target &&
         event.target.classList.contains("removeLocation")
       ) {
-        console.log("remove loc clicked");
         const idx = event.target.getAttribute("data-idxloc");
         const dateGroup = document
           .getElementById(`loc-${idx}`)
@@ -186,5 +180,92 @@ if (tourDataForm) {
         currentIdxLocation--;
       }
     });
-  });
+
+    // PATCH the tour
+    saveTourEditBtn.addEventListener("click", (e) => {
+      // Collect all the data
+      const id = tourData.id;
+      const name = document.getElementById("mainTitle").value;
+      const slug = name.toLowerCase().split(" ").join("-");
+      const duration = document.getElementById("duration").value;
+      const difficulty = document.getElementById("difficulty").value;
+      const price = document.getElementById("price").value;
+      const maxGroupSize = document.getElementById("groupeSize").value;
+      const imageCover = document.getElementById("coverImg").value;
+      const summary = document.getElementById("summary").value;
+      const description = document.getElementById("description").value;
+
+      const tourImgInputs = document.querySelectorAll("input[data-tour-img]");
+      const images = Array.from(tourImgInputs).map((input) => input.value);
+
+      const tourGuidesInputs = document.querySelectorAll(
+        "input[data-tour-guide]"
+      );
+      const guides = Array.from(tourGuidesInputs)
+        .filter((checkbox) => checkbox.checked)
+        .map((checkbox) => checkbox.id);
+
+      const tourDatesInputs = document.querySelectorAll(
+        "input[data-tour-date]"
+      );
+      const startDates = Array.from(tourDatesInputs).map(
+        (input) => input.value
+      );
+
+      // startLocation missing here
+      const startingLocationGroup = document.getElementById("startingLocation");
+      const startLocation = {
+        type: "Point",
+        coordinates: [
+          startingLocationGroup.querySelector('input[name="StartingPosLong"]')
+            .value,
+          startingLocationGroup.querySelector('input[name="StartingPosLat"]')
+            .value,
+        ],
+        address: startingLocationGroup.querySelector(
+          'input[name="StartingPosAddrs"]'
+        ).value,
+        description: startingLocationGroup.querySelector(
+          'input[name="StartingPosdesc"]'
+        ).value,
+      };
+
+      const tourLocationGroups = document.querySelectorAll(
+        "[data-tour-location]"
+      );
+      const locations = Array.from(tourLocationGroups).map((group) => {
+        return {
+          type: "Point",
+          coordinates: [
+            group.querySelector('input[name^="pos-"]').value,
+            group.querySelector('input[name^="lat-"]').value,
+          ],
+
+          description: group.querySelector('input[name^="desciption-"]').value,
+          day: group.querySelector('input[name^="days-"]').value,
+        };
+      });
+      // Send the API adress PATCH
+      updateSettings(
+        {
+          id,
+          name,
+          slug,
+          duration,
+          difficulty,
+          price,
+          maxGroupSize,
+          imageCover,
+          summary,
+          description,
+          images,
+          guides,
+          startDates,
+          startLocation,
+          locations,
+        },
+        "tour"
+      );
+    });
+  }); // Dom Ready Event listner
 }

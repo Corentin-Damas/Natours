@@ -1,0 +1,25 @@
+extends base
+
+block content
+    section.section-header-sm
+        h1.heading-primary.ma-bt-md.bg-tours Reviews Manager
+    main.main
+        .form--management-reviews.ma-top-sm
+            each review in reviews
+                .card-management-review.ma-bt-sm(id=review.id)
+                    div.dflex
+                        img.review--management-miniature(src=`./img/users/${review.user.photo}`, alt=`review ${review.user.name} photo`)
+                        h6.description__text.subtext= review.user.name 
+                    div
+                        h6.description__text.subtext.ma-bt-sd= review.tour.name 
+                    .card-management-titles
+                        h6.description__text.subtext  rating: #{review.rating}
+                        
+                    .card-management-titles
+                        p.ma-bt-sm= review.review
+        
+                    button.btn.btn--red.btn-reviews.btn-reviews-edit(data-review=`${JSON.stringify(review._id)}`)
+                        span Delete
+                        svg.heading-box__icon.btn-reviews-icon
+                            use(xlink:href=`/img/icons.svg#icon-delete`)
+                

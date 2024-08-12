@@ -284,3 +284,17 @@ if (saveUserEdit)
       updateSettings({ id, name, email, role }, "userEdit");
     });
   });
+
+const reviewManagement = document.querySelector(".form--management-reviews");
+const allReviewDelete = document.querySelectorAll(".card-management-review");
+if (reviewManagement) {
+  allReviewDelete.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      deleteSetting(btn.id, "userEdit");
+      window.setTimeout(() => {
+        location.assign("/manage-reviews");
+      }, 500);
+    });
+  });
+}

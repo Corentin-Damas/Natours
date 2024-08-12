@@ -31,7 +31,6 @@ export const updateSettings = async (data, type) => {
   }
 };
 export const deleteSetting = async (id, type) => {
-  console.log(id);
   try {
     const url = `http://127.0.0.1:3000/api/v1/reviews/${id}`;
 

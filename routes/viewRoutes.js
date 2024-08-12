@@ -69,6 +69,20 @@ router.get(
   viewsController.getAllUsers
 );
 router.get(
+  "/manage-reviews",
+  authController.isLoggedIn,
+  authController.protect,
+  authController.restrictTo("admin"),
+  viewsController.getAllReviews
+);
+router.get(
+  "/manage-bookings",
+  authController.isLoggedIn,
+  authController.protect,
+  authController.restrictTo("admin"),
+  viewsController.getAllBookings
+);
+router.get(
   "/manage-tours/:slug",
   authController.isLoggedIn,
   authController.protect,

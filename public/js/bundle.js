@@ -105,7 +105,6 @@ const $8bc100f925d8cfe6$export$f558026a994b6051 = async (data, type)=>{
     }
 };
 const $8bc100f925d8cfe6$export$b0d8b865196f9f1a = async (id, type)=>{
-    console.log(id);
     try {
         const url = `http://127.0.0.1:3000/api/v1/reviews/${id}`;
         const res = await axios({
@@ -361,6 +360,17 @@ if ($b6f4712e4c6c8e18$var$saveUserEdit) $b6f4712e4c6c8e18$var$allUserSaveForm.fo
             email: email,
             role: role
         }, "userEdit");
+    });
+});
+const $b6f4712e4c6c8e18$var$reviewManagement = document.querySelector(".form--management-reviews");
+const $b6f4712e4c6c8e18$var$allReviewDelete = document.querySelectorAll(".card-management-review");
+if ($b6f4712e4c6c8e18$var$reviewManagement) $b6f4712e4c6c8e18$var$allReviewDelete.forEach((btn)=>{
+    btn.addEventListener("click", (e)=>{
+        e.preventDefault();
+        (0, $8bc100f925d8cfe6$export$b0d8b865196f9f1a)(btn.id, "userEdit");
+        window.setTimeout(()=>{
+            location.assign("/manage-reviews");
+        }, 500);
     });
 });
 

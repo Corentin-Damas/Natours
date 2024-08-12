@@ -23,7 +23,14 @@ See result: https://corentin-damas.github.io/Natours/
 
 ## To be done
 
- - Manage Users
+
  - Manage reviews
  - Manage Bookings
  - Create a review from tour
+
+
+## To Consider
+- add search bar / queries:
+    -- Tours: search by price, by location ... 
+    -- Manage User : Search by name ( search: Aar )
+    -- Manage Review: search by tour

@@ -88,7 +88,7 @@ const $3c68af49dfc9768d$export$4c5dd147b21b9176 = (locations)=>{
 
 const $8bc100f925d8cfe6$export$f558026a994b6051 = async (data, type)=>{
     try {
-        const url = type == "password" ? "http://127.0.0.1:3000/api/v1/users/updateMyPassword" : type == "review" ? `http://127.0.0.1:3000/api/v1/reviews/${data.id}` : type = `http://127.0.0.1:3000/api/v1/tours/${data.id}`;
+        const url = type == "password" ? "http://127.0.0.1:3000/api/v1/users/updateMyPassword" : type == "review" ? `http://127.0.0.1:3000/api/v1/reviews/${data.id}` : type == "tour" ? `http://127.0.0.1:3000/api/v1/tours/${data.id}` : type == "userEdit" ? `http://127.0.0.1:3000/api/v1/users/${data.id}` : "http://127.0.0.1:3000/api/v1/users/updateMe";
         const res = await axios({
             method: "PATCH",
             withCredentials: true,
@@ -150,6 +150,7 @@ const $b6f4712e4c6c8e18$var$deleteBtn = document.querySelector(".btn-reviews-del
 const $b6f4712e4c6c8e18$var$bookingTourSelected = document.querySelector(".booking-selection");
 const $b6f4712e4c6c8e18$var$saveTourEditBtn = document.querySelector(".btn-save-edit");
 const $b6f4712e4c6c8e18$var$bookingLink = document.querySelector(".go-to-booking");
+const $b6f4712e4c6c8e18$var$saveUserEdit = document.querySelector(".form--management-users");
 if ($b6f4712e4c6c8e18$var$mapBox) {
     const locations = JSON.parse($b6f4712e4c6c8e18$var$mapBox.dataset.locations);
     (0, $3c68af49dfc9768d$export$4c5dd147b21b9176)(locations);
@@ -346,6 +347,22 @@ if ($b6f4712e4c6c8e18$var$tourDataForm) document.addEventListener("DOMContentLoa
         }, "tour");
     });
 }); // Dom Ready Event listner
+const $b6f4712e4c6c8e18$var$allUserSaveForm = document.querySelectorAll(".card-management-user");
+if ($b6f4712e4c6c8e18$var$saveUserEdit) $b6f4712e4c6c8e18$var$allUserSaveForm.forEach((btn)=>{
+    btn.addEventListener("submit", (e)=>{
+        e.preventDefault();
+        const id = btn.id;
+        const name = btn.querySelector('input[name^="name-"]').value;
+        const email = btn.querySelector('input[name^="email-"]').value;
+        const role = btn.querySelector('select[name^="role-"]').value;
+        (0, $8bc100f925d8cfe6$export$f558026a994b6051)({
+            id: id,
+            name: name,
+            email: email,
+            role: role
+        }, "userEdit");
+    });
+});
 
 
 //# sourceMappingURL=bundle.js.map

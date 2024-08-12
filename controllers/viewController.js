@@ -111,6 +111,14 @@ exports.getReview = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find()
+  res.status(200).render("manageUsers", {
+    title: "Manage users",
+    users
+  });
+});
+
 exports.getLanding = catchAsync(async (req, res, next) => {
   let tours = defaultTours;
   tours = await Tour.find().sort({ price: 1 }).limit(3);

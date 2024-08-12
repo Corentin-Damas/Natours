@@ -7,10 +7,12 @@ export const updateSettings = async (data, type) => {
         ? "http://127.0.0.1:3000/api/v1/users/updateMyPassword"
         : type == "review"
         ? `http://127.0.0.1:3000/api/v1/reviews/${data.id}`
-        : type = "tour"
-        ? `http://127.0.0.1:3000/api/v1/tours/${data.id}` 
+        : type == "tour"
+        ? `http://127.0.0.1:3000/api/v1/tours/${data.id}`
+        : type == "userEdit"
+        ? `http://127.0.0.1:3000/api/v1/users/${data.id}`
         : "http://127.0.0.1:3000/api/v1/users/updateMe";
-    
+
     const res = await axios({
       method: "PATCH",
       withCredentials: true, // Include credentials (cookies)
@@ -29,10 +31,9 @@ export const updateSettings = async (data, type) => {
   }
 };
 export const deleteSetting = async (id, type) => {
-  console.log(id)
+  console.log(id);
   try {
-    const url =
-      `http://127.0.0.1:3000/api/v1/reviews/${id}`
+    const url = `http://127.0.0.1:3000/api/v1/reviews/${id}`;
 
     const res = await axios({
       method: "DELETE",

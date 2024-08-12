@@ -1,0 +1,39 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+
+    li(class=`${active ? "side-nav--active": ""}`)
+        a(href=`${link}`)
+            svg
+                use(xlink:href=`img/icons.svg#icon-${icon}`)
+            | #{text}
+
+
+block content
+    .form--management-users
+        each user in users
+            form.card-management-user.ma-bt-sm(id=user._id, )
+                img.card-management-userImg(src=`./img/users/${user.photo}`, alt=`user ${user.name} photo`)
+
+                .card-management-titles
+                    h3.wei700.green.ma-bt-sm= user.name 
+                    input#name.form__input(type='text', value=`${user.name}`, required, name=`name-${user._id}`)
+        
+                .card-management-titles
+                    h3.wei700.green.ma-bt-sm= user.email
+                    input#email.form__input(type='email', value=`${user.email}`, required name=`email-${user._id}`)
+                
+                .card-management-titles
+                    h3.wei700.green.ma-bt-sm Role ( actual: #{user.role})
+                    select#role.form__input.form__input-tour(type="text", name=`role-${user._id}`, required)
+                        option(value="user", selected=user.role === 'user') User
+                        option(value="guide", selected=user.role === 'guide') Guide
+                        option(value="lead-guide", selected=user.role === 'lead-guide') Lead guide
+                        option(value="admin", selected=user.role === 'admin') Admin
+        
+    
+                button.btn.btn--green.btn-reviews.btn-reviews-edit(data-user=`${JSON.stringify(user._id)}`)
+                    span Save
+                    svg.heading-box__icon.btn-reviews-icon
+                        use(xlink:href=`/img/icons.svg#icon-edit`)
+            

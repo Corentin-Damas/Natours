@@ -13,10 +13,11 @@ const tourDataForm = document.querySelector(".form-edit-tour");
 const userPasswordForm = document.querySelector(".form-user-password");
 const bookBtn = document.getElementById("book-tour");
 const deleteBtn = document.querySelector(".btn-reviews-delete");
-
 const bookingTourSelected = document.querySelector(".booking-selection");
 const saveTourEditBtn = document.querySelector(".btn-save-edit");
 const bookingLink = document.querySelector(".go-to-booking");
+
+const saveUserEdit = document.querySelector(".form--management-users");
 
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
@@ -135,7 +136,7 @@ if (tourDataForm) {
       const newLocationDiv = document.createElement("div");
       newLocationDiv.className = "form__group two-col border-bot";
       newLocationDiv.id = `loc-${currentIdxLocation}`;
-      newLocationDiv.dataset.tourLocation = '';
+      newLocationDiv.dataset.tourLocation = "";
       newLocationDiv.innerHTML = `        
         <div> 
             <label class="form__label form__label-tour" for="pos-${currentIdxLocation}"> Longitude </label>
@@ -269,3 +270,17 @@ if (tourDataForm) {
     });
   }); // Dom Ready Event listner
 }
+
+const allUserSaveForm = document.querySelectorAll(".card-management-user");
+if (saveUserEdit)
+  allUserSaveForm.forEach((btn) => {
+    btn.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const id = btn.id;
+      const name = btn.querySelector('input[name^="name-"]').value;
+      const email = btn.querySelector('input[name^="email-"]').value;
+      const role = btn.querySelector('select[name^="role-"]').value;
+
+      updateSettings({ id, name, email, role }, "userEdit");
+    });
+  });

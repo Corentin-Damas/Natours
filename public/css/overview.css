@@ -1830,6 +1830,7 @@ body {
   padding: 2rem;
   gap: 2rem;
 }
+
 .card-management-titles {
   font-size: 1.5rem;
   width: 25rem;
@@ -1846,6 +1847,24 @@ body {
   justify-items: start;
   gap: 1rem;
   width: 25rem;
+}
+
+.card-management-user{
+  height: 20rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border: solid 1px #444;
+  border-radius: 5px;
+  font-size: 2rem;
+  padding: 2rem;
+  gap: 2rem;
+}
+.card-management-userImg{
+  height: 10rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
 }
 
 .form-edit-tour {

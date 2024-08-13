@@ -121,6 +121,24 @@ const $8bc100f925d8cfe6$export$b0d8b865196f9f1a = async (id, type)=>{
         (0, $a01ad5087aa0d30d$export$de026b00723010c1)("error", err.response.data.message);
     }
 };
+const $8bc100f925d8cfe6$export$6d1b1667c14c5124 = async (data, type)=>{
+    try {
+        const url = `http://127.0.0.1:3000/api/v1/reviews`;
+        const res = await axios({
+            method: "POST",
+            withCredentials: true,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            url: url,
+            data: data
+        });
+        if (res.data.status === "success") (0, $a01ad5087aa0d30d$export$de026b00723010c1)("success", `${type.toUpperCase()} Your review has been sent ! `);
+    } catch (err) {
+        console.log(err.response);
+        (0, $a01ad5087aa0d30d$export$de026b00723010c1)("error", err.response.data.message);
+    }
+};
 
 
 
@@ -367,11 +385,27 @@ const $b6f4712e4c6c8e18$var$allReviewDelete = document.querySelectorAll(".card-m
 if ($b6f4712e4c6c8e18$var$reviewManagement) $b6f4712e4c6c8e18$var$allReviewDelete.forEach((btn)=>{
     btn.addEventListener("click", (e)=>{
         e.preventDefault();
-        (0, $8bc100f925d8cfe6$export$b0d8b865196f9f1a)(btn.id, "userEdit");
+        (0, $8bc100f925d8cfe6$export$6d1b1667c14c5124)(btn.id, "userEdit");
         window.setTimeout(()=>{
             location.assign("/manage-reviews");
         }, 500);
     });
+});
+const $b6f4712e4c6c8e18$var$newReview = document.querySelector(".form-new-review");
+if ($b6f4712e4c6c8e18$var$newReview) $b6f4712e4c6c8e18$var$newReview.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const review = document.getElementById("review").value;
+    const rating = document.getElementById("rating").value;
+    const { tour: tour, user: user } = JSON.parse($b6f4712e4c6c8e18$var$newReview.dataset.meta);
+    (0, $8bc100f925d8cfe6$export$6d1b1667c14c5124)({
+        review: review,
+        rating: rating,
+        tour: tour,
+        user: user
+    }, "review");
+    window.setTimeout(()=>{
+        location.assign("/my-reviews");
+    }, 1500);
 });
 
 

@@ -79,6 +79,15 @@ exports.getMyReviews = catchAsync(async (req, res, next) => {
     });
   }
 });
+exports.createReview = catchAsync(async (req, res, next) => {
+  const tour = await Tour.findOne({ slug: req.params.slug });
+
+  res.status(200).render("createReview", {
+    title: "Create reviews",
+    tour,
+  });
+});
+
 exports.getMyBilling = catchAsync(async (req, res, next) => {
   const bookings = await Booking.find({ user: req.user.id }).populate({
     path: "tour",

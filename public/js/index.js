@@ -1,7 +1,7 @@
 // import "@babel/polyfill";
 import { login, logout } from "./login";
 import { displayMap } from "./mapBox";
-import { updateSettings, deleteSetting } from "./updateSettings";
+import { updateSettings, deleteSetting, createSetting } from "./updateSettings";
 import { bookTour } from "./stripe";
 
 const mapBox = document.getElementById("map");
@@ -291,10 +291,25 @@ if (reviewManagement) {
   allReviewDelete.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      deleteSetting(btn.id, "userEdit");
+      createSetting(btn.id, "userEdit");
       window.setTimeout(() => {
         location.assign("/manage-reviews");
       }, 500);
     });
+  });
+}
+
+const newReview = document.querySelector(".form-new-review");
+if (newReview) {
+  newReview.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const review = document.getElementById("review").value;
+    const rating = document.getElementById("rating").value;
+    const { tour, user } = JSON.parse(newReview.dataset.meta);
+
+    createSetting({ review, rating, tour, user }, "review");
+    window.setTimeout(() => {
+      location.assign("/my-reviews");
+    }, 1500);
   });
 }

@@ -40,11 +40,6 @@ router.get(
   authController.protect,
   viewsController.getReview
 );
-router.patch(
-  "/submit-review-data/:id",
-  // authController.protect,
-  reviewController.updateMyReview
-);
 
 router.get(
   "/my-tours",
@@ -52,6 +47,12 @@ router.get(
   bookingController.createBookingCheckout,
   authController.protect,
   viewsController.getMyTours
+);
+router.get(
+  "/create-review/:slug",
+  authController.isLoggedIn,
+  authController.protect,
+  viewsController.createReview
 );
 
 router.get(

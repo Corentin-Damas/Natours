@@ -50,3 +50,24 @@ export const deleteSetting = async (id, type) => {
     showAlert("error", err.response.data.message);
   }
 };
+export const createSetting = async (data, type) => {
+  try {
+    const url = `http://127.0.0.1:3000/api/v1/reviews`;
+
+    const res = await axios({
+      method: "POST",
+      withCredentials: true, // Include credentials (cookies)
+      headers: {
+        "Content-Type": "application/json",
+      },
+      url,
+      data
+    });
+    if (res.data.status === "success") {
+      showAlert("success", `${type.toUpperCase()} Your review has been sent ! `);
+    }
+  } catch (err) {
+    console.log(err.response);
+    showAlert("error", err.response.data.message);
+  }
+};

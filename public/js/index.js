@@ -10,6 +10,7 @@ const logOutBtn = document.querySelector(".nav__el--logout");
 const userDataForm = document.querySelector(".form-user-data");
 const reviewDataForm = document.querySelector(".form-edit-review");
 const tourDataForm = document.querySelector(".form-edit-tour");
+const newTourDataForm = document.querySelector(".form-new-tour");
 const userPasswordForm = document.querySelector(".form-user-password");
 const bookBtn = document.getElementById("book-tour");
 const deleteBtn = document.querySelector(".btn-reviews-delete");
@@ -44,6 +45,9 @@ if (userDataForm)
     form.append("photo", document.getElementById("photo").files[0]);
 
     updateSettings(form, "data");
+    window.setTimeout(() => {
+      location.reload();
+    });
   });
 
 if (userPasswordForm)
@@ -105,7 +109,7 @@ if (bookingTourSelected) {
   });
 }
 
-// Manage tour data edit form
+// PATCH TOUR
 if (tourDataForm) {
   document.addEventListener("DOMContentLoaded", function () {
     const addDateButton = document.getElementById("addDate");
@@ -271,6 +275,215 @@ if (tourDataForm) {
   }); // Dom Ready Event listner
 }
 
+// NEW TOUR
+if (newTourDataForm) {
+  document.addEventListener("DOMContentLoaded", function () {
+    const addDateButton = document.getElementById("addDate");
+    const addLocationButton = document.getElementById("addLocation");
+    const datesSection = document.querySelector(".form-tour-dates");
+    const locationsSection = document.querySelector(".form-tour-locations");
+    const tourData = JSON.parse(newTourDataForm.dataset.tour);
+    let currentIdxDates = 1;
+    let currentIdxLocation = 1;
+
+    //  ADD new DATE input
+    addDateButton.addEventListener("click", function () {
+      const newDateGroup = document.createElement("div");
+      newDateGroup.className = "form__group";
+      newDateGroup.innerHTML = `
+      <label class="form__label form__label-tour" for="startDates-${currentIdxDates}"> New Date:</label>
+      <div class="form__crud" >
+      <input  class="form__input-dates" type="datetime-local" id="startDates-${currentIdxDates}" name="startDates-${currentIdxDates}" min="${tourData.calendareData.minDateTime}" max="${tourData.calendareData.maxDateTime}" value="${tourData.calendareData.minDateTime}">
+      <button type="button" class="removeDate btn-crud" data-idx="${currentIdxDates}">Remove</button>
+      </div>
+    `;
+      datesSection.appendChild(newDateGroup);
+      currentIdxDates++;
+    });
+
+    // ADD new LOCATIONS input
+    addLocationButton.addEventListener("click", function () {
+      const newLocationDiv = document.createElement("div");
+      newLocationDiv.className = "form__group two-col border-bot";
+      newLocationDiv.id = `loc-${currentIdxLocation}`;
+      newLocationDiv.dataset.tourLocation = "";
+      newLocationDiv.innerHTML = `        
+        <div> 
+            <label class="form__label form__label-tour" for="pos-${currentIdxLocation}"> Longitude </label>
+            <input class="form__input form__input-tour" type="number" id="pos-${currentIdxLocation}" name="pos-${currentIdxLocation}" placeholder="Longitude" required)/>
+        </div> 
+        <div> 
+            <label class="form__label form__label-tour" for="lat-${currentIdxLocation}")> Latitude </label>
+            <input  class="form__input form__input-tour" type="number" id="lat-${currentIdxLocation}" name="lat-${currentIdxLocation}"  placeholder="Latitude" required)/>
+        </div> 
+        <div>
+            <label class="form__label form__label-tour" for="desciption-${currentIdxLocation}"> Description </label>
+            <input class="form__input form__input-tour" type="text" id="desciption-${currentIdxLocation}" placeholder="Place name or small description" name="desciption-${currentIdxLocation}" ) required/>
+        </div> 
+        <div> 
+            <label class="form__label form__label-tour" for="days-${currentIdxLocation}"> Number of days </label>
+            <input class="form__input form__input-tour" type="number" id="days-${currentIdxLocation}" name="days-${currentIdxLocation}" value="1") required/>
+        </div> 
+        <button type="button" class="btn-crud btn-loc removeLocation" id="removeLocation" data-idxloc="${currentIdxLocation}"> Remove Location </button>   
+    `;
+      locationsSection.appendChild(newLocationDiv);
+      currentIdxLocation++;
+    });
+
+    //  REMOVE: DATE, LOCATION
+    newTourDataForm.addEventListener("click", function (event) {
+      if (event.target && event.target.classList.contains("removeDate")) {
+        const idx = event.target.getAttribute("data-idx");
+        const dateGroup = document
+          .getElementById(`startDates-${idx}`)
+          .closest(".form__group");
+        dateGroup.remove();
+        currentIdxDates--;
+      } else if (
+        event.target &&
+        event.target.classList.contains("removeLocation")
+      ) {
+        const idx = event.target.getAttribute("data-idxloc");
+        const dateGroup = document
+          .getElementById(`loc-${idx}`)
+          .closest(".form__group");
+        dateGroup.remove();
+        currentIdxLocation--;
+      }
+    });
+
+    // Get COVER
+    const imageCover = document.getElementById("image-cover");
+    const filePlaceholder = document.getElementById("cover-placeholder");
+
+    imageCover.addEventListener("change", function () {
+      const fileName =
+        this.files.length > 0 ? this.files[0].name : "No file chosen";
+      filePlaceholder.textContent = fileName;
+    });
+
+    // Get IMAGES
+    const images = document.querySelectorAll(".form__upload-tour");
+
+    images.forEach(function (input) {
+      input.addEventListener("change", function () {
+        const label = this.nextElementSibling;
+        // Update the label text based on the selected file name
+        const fileName =
+          this.files.length > 0 ? this.files[0].name : `No File selected `;
+        label.textContent = fileName;
+      });
+    });
+
+    // Collect all the data .btn-save-NewTour
+    // Need to make it has a Form object?  ckeck  userDataForm to create a form Object
+    const saveNewTourBtn = document.querySelector(".btn-save-NewTour");
+    saveNewTourBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      form.append("photo", document.getElementById("photo").files[0]);
+      const name = document.getElementById("mainTitle").value;
+      const slug = name.toLowerCase().split(" ").join("-");
+      const duration = document.getElementById("duration").value;
+      const difficulty = document.getElementById("difficulty").value;
+      const price = document.getElementById("price").value;
+      const maxGroupSize = document.getElementById("groupeSize").value;
+      const imageCover = document.getElementById("image-cover").value;
+      const summary = document.getElementById("summary").value;
+      const description = document.getElementById("description").value;
+
+      const tourImgInputs = document.querySelectorAll("input[data-tour-img]");
+      const images = Array.from(tourImgInputs).map((input) => input.value);
+
+      const tourGuidesInputs = document.querySelectorAll(
+        "input[data-tour-guide]"
+      );
+      const guides = Array.from(tourGuidesInputs)
+        .filter((checkbox) => checkbox.checked)
+        .map((checkbox) => checkbox.id);
+
+      const tourDatesInputs = document.querySelectorAll(
+        "input[data-tour-date]"
+      );
+      const startDates = Array.from(tourDatesInputs).map(
+        (input) => input.value
+      );
+
+      // startLocation missing here
+      const startingLocationGroup = document.getElementById("startingLocation");
+      const startLocation = {
+        type: "Point",
+        coordinates: [
+          startingLocationGroup.querySelector('input[name="StartingPosLong"]')
+            .value,
+          startingLocationGroup.querySelector('input[name="StartingPosLat"]')
+            .value,
+        ],
+        address: startingLocationGroup.querySelector(
+          'input[name="StartingPosAddrs"]'
+        ).value,
+        description: startingLocationGroup.querySelector(
+          'input[name="StartingPosdesc"]'
+        ).value,
+      };
+
+      const tourLocationGroups = document.querySelectorAll(
+        "[data-tour-location]"
+      );
+      const locations = Array.from(tourLocationGroups).map((group) => {
+        return {
+          type: "Point",
+          coordinates: [
+            group.querySelector('input[name^="pos-"]').value,
+            group.querySelector('input[name^="lat-"]').value,
+          ],
+
+          description: group.querySelector('input[name^="desciption-"]').value,
+          day: group.querySelector('input[name^="days-"]').value,
+        };
+      });
+      // Send the API adress POST
+      const data = {
+        name,
+        slug,
+        duration,
+        difficulty,
+        price,
+        maxGroupSize,
+        summary,
+        description,
+        imageCover,
+        images,
+        guides,
+        startDates,
+        startLocation,
+        locations,
+      };
+      console.log(data);
+
+      createSetting(
+        {
+          name,
+          slug,
+          duration,
+          difficulty,
+          price,
+          maxGroupSize,
+          summary,
+          description,
+          imageCover,
+          images,
+          guides,
+          startDates,
+          startLocation,
+          locations,
+        },
+        "tour"
+      );
+    });
+  }); // Dom Ready Event listner
+}
+
 const allUserSaveForm = document.querySelectorAll(".card-management-user");
 if (saveUserEdit)
   allUserSaveForm.forEach((btn) => {
@@ -285,6 +498,7 @@ if (saveUserEdit)
     });
   });
 
+// CHECK this part if create setting is well used here
 const reviewManagement = document.querySelector(".form--management-reviews");
 const allReviewDelete = document.querySelectorAll(".card-management-review");
 if (reviewManagement) {

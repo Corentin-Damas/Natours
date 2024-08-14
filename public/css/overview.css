@@ -1,4 +1,4 @@
-/* .btn--green */
+/* .form__upload-tourCover*/
 :root {
   --section-rotate: 9vw;
 }
@@ -1615,9 +1615,6 @@ body {
   width: 100%;
   text-align: center;
 }
-.test {
-  width: 40rem;
-}
 
 .center {
   text-align: center;
@@ -1632,6 +1629,9 @@ body {
 .green {
   color: #55c57a;
 }
+.white {
+  color: #f1f1f1;
+}
 .red {
   color: #eb4d4b;
   fill: #eb4d4b;
@@ -1643,7 +1643,10 @@ body {
   max-height: 30rem;
   object-fit: cover;
 }
-
+.small-legend {
+  font-weight: 700;
+  font-size: 1.6rem;
+}
 .small-img {
   width: 100%;
   max-height: 30rem;
@@ -1920,7 +1923,8 @@ body {
   aspect-ratio: 1/1;
   border-radius: 50%;
 }
-.form-edit-tour {
+.form-edit-tour,
+.form-new-tour {
   padding: 3rem 7rem;
   background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
 }
@@ -1934,6 +1938,21 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
+}
+.form__photo-container {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form__photo-preview {
+  height: 10rem;
+
+  align-content: center;
+  aspect-ratio: 16/9;
 }
 
 .form__square {
@@ -2089,5 +2108,43 @@ input[type="checkbox"].checkbox:checked + label:after {
   align-items: center;
   height: 100%;
   gap: 1rem;
+}
 
+.form__upload-tour,
+.form__upload-tourCover {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  color: red;
+  z-index: -1;
+}
+
+.form__upload-tour:focus + label,
+.form__upload-tourCover:focus + label {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.form__upload-tour + label,
+.form__upload-tourCover + label {
+  color: #ffffff;
+  display: inline-block;
+  text-decoration: none;
+  border: 1px solid #ffffff;
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.form__upload-tour + label:hover,
+.form__upload-tourCover + label:hover {
+  background-color: #55c57a;
+  color: #fff;
+  -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+  -webkit-transform: translateY(-2px);
+  transform: translateY(-2px);
 }

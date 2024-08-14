@@ -47,6 +47,9 @@ block content
                 .form__group
                     label.form__label.form__label-tour(for='coverImg') Tour Cover image
                     input#coverImg.form__input.form__input-tour(type="text", name="coverImg", value=`${tour.imageCover}`)
+                    div.form__photo-container
+                        p.white.small-legend acctually used
+                        img.form__photo-preview(src=`/img/tours/${tour.imageCover}`, alt='User photo')
                 
 
             .form__group
@@ -62,6 +65,9 @@ block content
                     .form__group
                         label.form__label.form__label-tour(for=`image${idx}`) Image n° #{idx + 1}
                         input.form__input.form__input-tour(type="text", id=`image${idx}` , name="coverImg", value=`${img}`, data-tour-img)
+                        div.form__photo-container
+                            p.white.small-legend acctually used
+                            img.form__photo-preview(src=`/img/tours/${img}`, alt='User photo')
             
             .form__group
                 h1.form__label.form__label-tour Select the guides

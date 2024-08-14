@@ -175,6 +175,14 @@ exports.getPolicy = (req, res, next) => {
     title: "Policy",
   });
 };
+exports.createNewTour =  catchAsync (async (req, res, next) => {
+  const guides = await User.find({ role: { $in: ["guide", "lead-guide"] } });
+  res.status(200).render("newTour", {
+    title: "Create Tour",
+    calendareData,
+    guides,
+  });
+});
 exports.getManageTours = catchAsync(async (req, res, next) => {
   const tours = await Tour.find();
   res.status(200).render("manageToursOverview", {

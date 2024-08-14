@@ -52,7 +52,12 @@ export const deleteSetting = async (id, type) => {
 };
 export const createSetting = async (data, type) => {
   try {
-    const url = `http://127.0.0.1:3000/api/v1/reviews`;
+    const url =
+      type == "review"
+        ? "http://127.0.0.1:3000/api/v1/reviews"
+        : type == "tour"
+        ? "http://127.0.0.1:3000/api/v1/tours"
+        : "";
 
     const res = await axios({
       method: "POST",
@@ -61,10 +66,13 @@ export const createSetting = async (data, type) => {
         "Content-Type": "application/json",
       },
       url,
-      data
+      data,
     });
     if (res.data.status === "success") {
-      showAlert("success", `${type.toUpperCase()} Your review has been sent ! `);
+      showAlert(
+        "success",
+        `${type.toUpperCase()} Your review has been sent ! `
+      );
     }
   } catch (err) {
     console.log(err.response);

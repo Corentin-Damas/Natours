@@ -123,7 +123,7 @@ const $8bc100f925d8cfe6$export$b0d8b865196f9f1a = async (id, type)=>{
 };
 const $8bc100f925d8cfe6$export$6d1b1667c14c5124 = async (data, type)=>{
     try {
-        const url = `http://127.0.0.1:3000/api/v1/reviews`;
+        const url = type == "review" ? "http://127.0.0.1:3000/api/v1/reviews" : type == "tour" ? "http://127.0.0.1:3000/api/v1/tours" : "";
         const res = await axios({
             method: "POST",
             withCredentials: true,
@@ -161,6 +161,7 @@ const $b6f4712e4c6c8e18$var$logOutBtn = document.querySelector(".nav__el--logout
 const $b6f4712e4c6c8e18$var$userDataForm = document.querySelector(".form-user-data");
 const $b6f4712e4c6c8e18$var$reviewDataForm = document.querySelector(".form-edit-review");
 const $b6f4712e4c6c8e18$var$tourDataForm = document.querySelector(".form-edit-tour");
+const $b6f4712e4c6c8e18$var$newTourDataForm = document.querySelector(".form-new-tour");
 const $b6f4712e4c6c8e18$var$userPasswordForm = document.querySelector(".form-user-password");
 const $b6f4712e4c6c8e18$var$bookBtn = document.getElementById("book-tour");
 const $b6f4712e4c6c8e18$var$deleteBtn = document.querySelector(".btn-reviews-delete");
@@ -181,11 +182,14 @@ if ($b6f4712e4c6c8e18$var$loginForm) $b6f4712e4c6c8e18$var$loginForm.addEventLis
 if ($b6f4712e4c6c8e18$var$logOutBtn) $b6f4712e4c6c8e18$var$logOutBtn.addEventListener("click", (0, $71aa1b7eb6279560$export$a0973bcfe11b05c9));
 if ($b6f4712e4c6c8e18$var$userDataForm) $b6f4712e4c6c8e18$var$userDataForm.addEventListener("submit", (e)=>{
     e.preventDefault();
-    const form = new FormData();
-    form.append("name", document.getElementById("name").value);
-    form.append("email", document.getElementById("email").value);
-    form.append("photo", document.getElementById("photo").files[0]);
-    (0, $8bc100f925d8cfe6$export$f558026a994b6051)(form, "data");
+    const form1 = new FormData();
+    form1.append("name", document.getElementById("name").value);
+    form1.append("email", document.getElementById("email").value);
+    form1.append("photo", document.getElementById("photo").files[0]);
+    (0, $8bc100f925d8cfe6$export$f558026a994b6051)(form1, "data");
+    window.setTimeout(()=>{
+        location.reload();
+    });
 });
 if ($b6f4712e4c6c8e18$var$userPasswordForm) $b6f4712e4c6c8e18$var$userPasswordForm.addEventListener("submit", async (e)=>{
     e.preventDefault();
@@ -237,7 +241,7 @@ if ($b6f4712e4c6c8e18$var$bookingTourSelected) {
         $b6f4712e4c6c8e18$var$bookingLink.href = `http://127.0.0.1:3000/tour/${preSelection}`;
     });
 }
-// Manage tour data edit form
+// PATCH TOUR
 if ($b6f4712e4c6c8e18$var$tourDataForm) document.addEventListener("DOMContentLoaded", function() {
     const addDateButton = document.getElementById("addDate");
     const addLocationButton = document.getElementById("addLocation");
@@ -364,6 +368,168 @@ if ($b6f4712e4c6c8e18$var$tourDataForm) document.addEventListener("DOMContentLoa
         }, "tour");
     });
 }); // Dom Ready Event listner
+// NEW TOUR
+if ($b6f4712e4c6c8e18$var$newTourDataForm) document.addEventListener("DOMContentLoaded", function() {
+    const addDateButton = document.getElementById("addDate");
+    const addLocationButton = document.getElementById("addLocation");
+    const datesSection = document.querySelector(".form-tour-dates");
+    const locationsSection = document.querySelector(".form-tour-locations");
+    const tourData = JSON.parse($b6f4712e4c6c8e18$var$newTourDataForm.dataset.tour);
+    let currentIdxDates = 1;
+    let currentIdxLocation = 1;
+    //  ADD new DATE input
+    addDateButton.addEventListener("click", function() {
+        const newDateGroup = document.createElement("div");
+        newDateGroup.className = "form__group";
+        newDateGroup.innerHTML = `
+      <label class="form__label form__label-tour" for="startDates-${currentIdxDates}"> New Date:</label>
+      <div class="form__crud" >
+      <input  class="form__input-dates" type="datetime-local" id="startDates-${currentIdxDates}" name="startDates-${currentIdxDates}" min="${tourData.calendareData.minDateTime}" max="${tourData.calendareData.maxDateTime}" value="${tourData.calendareData.minDateTime}">
+      <button type="button" class="removeDate btn-crud" data-idx="${currentIdxDates}">Remove</button>
+      </div>
+    `;
+        datesSection.appendChild(newDateGroup);
+        currentIdxDates++;
+    });
+    // ADD new LOCATIONS input
+    addLocationButton.addEventListener("click", function() {
+        const newLocationDiv = document.createElement("div");
+        newLocationDiv.className = "form__group two-col border-bot";
+        newLocationDiv.id = `loc-${currentIdxLocation}`;
+        newLocationDiv.dataset.tourLocation = "";
+        newLocationDiv.innerHTML = `        
+        <div> 
+            <label class="form__label form__label-tour" for="pos-${currentIdxLocation}"> Longitude </label>
+            <input class="form__input form__input-tour" type="number" id="pos-${currentIdxLocation}" name="pos-${currentIdxLocation}" placeholder="Longitude" required)/>
+        </div> 
+        <div> 
+            <label class="form__label form__label-tour" for="lat-${currentIdxLocation}")> Latitude </label>
+            <input  class="form__input form__input-tour" type="number" id="lat-${currentIdxLocation}" name="lat-${currentIdxLocation}"  placeholder="Latitude" required)/>
+        </div> 
+        <div>
+            <label class="form__label form__label-tour" for="desciption-${currentIdxLocation}"> Description </label>
+            <input class="form__input form__input-tour" type="text" id="desciption-${currentIdxLocation}" placeholder="Place name or small description" name="desciption-${currentIdxLocation}" ) required/>
+        </div> 
+        <div> 
+            <label class="form__label form__label-tour" for="days-${currentIdxLocation}"> Number of days </label>
+            <input class="form__input form__input-tour" type="number" id="days-${currentIdxLocation}" name="days-${currentIdxLocation}" value="1") required/>
+        </div> 
+        <button type="button" class="btn-crud btn-loc removeLocation" id="removeLocation" data-idxloc="${currentIdxLocation}"> Remove Location </button>   
+    `;
+        locationsSection.appendChild(newLocationDiv);
+        currentIdxLocation++;
+    });
+    //  REMOVE: DATE, LOCATION
+    $b6f4712e4c6c8e18$var$newTourDataForm.addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("removeDate")) {
+            const idx = event.target.getAttribute("data-idx");
+            const dateGroup = document.getElementById(`startDates-${idx}`).closest(".form__group");
+            dateGroup.remove();
+            currentIdxDates--;
+        } else if (event.target && event.target.classList.contains("removeLocation")) {
+            const idx = event.target.getAttribute("data-idxloc");
+            const dateGroup = document.getElementById(`loc-${idx}`).closest(".form__group");
+            dateGroup.remove();
+            currentIdxLocation--;
+        }
+    });
+    // Get COVER
+    const imageCover = document.getElementById("image-cover");
+    const filePlaceholder = document.getElementById("cover-placeholder");
+    imageCover.addEventListener("change", function() {
+        const fileName = this.files.length > 0 ? this.files[0].name : "No file chosen";
+        filePlaceholder.textContent = fileName;
+    });
+    // Get IMAGES
+    const images = document.querySelectorAll(".form__upload-tour");
+    images.forEach(function(input) {
+        input.addEventListener("change", function() {
+            const label = this.nextElementSibling;
+            // Update the label text based on the selected file name
+            const fileName = this.files.length > 0 ? this.files[0].name : `No File selected `;
+            label.textContent = fileName;
+        });
+    });
+    // Collect all the data .btn-save-NewTour
+    // Need to make it has a Form object?  ckeck  userDataForm to create a form Object
+    const saveNewTourBtn = document.querySelector(".btn-save-NewTour");
+    saveNewTourBtn.addEventListener("click", (e)=>{
+        e.preventDefault();
+        form.append("photo", document.getElementById("photo").files[0]);
+        const name = document.getElementById("mainTitle").value;
+        const slug = name.toLowerCase().split(" ").join("-");
+        const duration = document.getElementById("duration").value;
+        const difficulty = document.getElementById("difficulty").value;
+        const price = document.getElementById("price").value;
+        const maxGroupSize = document.getElementById("groupeSize").value;
+        const imageCover = document.getElementById("image-cover").value;
+        const summary = document.getElementById("summary").value;
+        const description = document.getElementById("description").value;
+        const tourImgInputs = document.querySelectorAll("input[data-tour-img]");
+        const images = Array.from(tourImgInputs).map((input)=>input.value);
+        const tourGuidesInputs = document.querySelectorAll("input[data-tour-guide]");
+        const guides = Array.from(tourGuidesInputs).filter((checkbox)=>checkbox.checked).map((checkbox)=>checkbox.id);
+        const tourDatesInputs = document.querySelectorAll("input[data-tour-date]");
+        const startDates = Array.from(tourDatesInputs).map((input)=>input.value);
+        // startLocation missing here
+        const startingLocationGroup = document.getElementById("startingLocation");
+        const startLocation = {
+            type: "Point",
+            coordinates: [
+                startingLocationGroup.querySelector('input[name="StartingPosLong"]').value,
+                startingLocationGroup.querySelector('input[name="StartingPosLat"]').value
+            ],
+            address: startingLocationGroup.querySelector('input[name="StartingPosAddrs"]').value,
+            description: startingLocationGroup.querySelector('input[name="StartingPosdesc"]').value
+        };
+        const tourLocationGroups = document.querySelectorAll("[data-tour-location]");
+        const locations = Array.from(tourLocationGroups).map((group)=>{
+            return {
+                type: "Point",
+                coordinates: [
+                    group.querySelector('input[name^="pos-"]').value,
+                    group.querySelector('input[name^="lat-"]').value
+                ],
+                description: group.querySelector('input[name^="desciption-"]').value,
+                day: group.querySelector('input[name^="days-"]').value
+            };
+        });
+        // Send the API adress POST
+        const data = {
+            name: name,
+            slug: slug,
+            duration: duration,
+            difficulty: difficulty,
+            price: price,
+            maxGroupSize: maxGroupSize,
+            summary: summary,
+            description: description,
+            imageCover: imageCover,
+            images: images,
+            guides: guides,
+            startDates: startDates,
+            startLocation: startLocation,
+            locations: locations
+        };
+        console.log(data);
+        (0, $8bc100f925d8cfe6$export$6d1b1667c14c5124)({
+            name: name,
+            slug: slug,
+            duration: duration,
+            difficulty: difficulty,
+            price: price,
+            maxGroupSize: maxGroupSize,
+            summary: summary,
+            description: description,
+            imageCover: imageCover,
+            images: images,
+            guides: guides,
+            startDates: startDates,
+            startLocation: startLocation,
+            locations: locations
+        }, "tour");
+    });
+}); // Dom Ready Event listner
 const $b6f4712e4c6c8e18$var$allUserSaveForm = document.querySelectorAll(".card-management-user");
 if ($b6f4712e4c6c8e18$var$saveUserEdit) $b6f4712e4c6c8e18$var$allUserSaveForm.forEach((btn)=>{
     btn.addEventListener("submit", (e)=>{
@@ -380,6 +546,7 @@ if ($b6f4712e4c6c8e18$var$saveUserEdit) $b6f4712e4c6c8e18$var$allUserSaveForm.fo
         }, "userEdit");
     });
 });
+// CHECK this part if create setting is well used here
 const $b6f4712e4c6c8e18$var$reviewManagement = document.querySelector(".form--management-reviews");
 const $b6f4712e4c6c8e18$var$allReviewDelete = document.querySelectorAll(".card-management-review");
 if ($b6f4712e4c6c8e18$var$reviewManagement) $b6f4712e4c6c8e18$var$allReviewDelete.forEach((btn)=>{
